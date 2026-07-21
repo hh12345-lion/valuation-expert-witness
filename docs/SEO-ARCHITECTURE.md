@@ -15,7 +15,7 @@ This document is the single source of truth for keyword strategy, content cluste
 | Metadata helper | `lib/metadata.ts` | Live — `createMetadata()` with canonical, `x-default` hreflang, OG `en_GB`, robots |
 | JSON-LD schemas | `lib/schema.ts` | Live — FAQ, breadcrumb, article, homepage, services, `DefinedTermSet` |
 | Site constants | `lib/site.ts` | Live — `SITE_URL`, LinkedIn URL |
-| Apex → www redirect | `middleware.ts` | Live — 301 to `www.valuationexpertwitness.co.uk` |
+| Apex → www redirect | Netlify Primary Domain (dashboard) | Handled at edge — single source of truth for canonicalization |
 | Content data | `lib/data/asset-types.ts`, `case-types.ts`, `guides.ts`, `glossary.ts` | Live — 8 asset types, 10 case types, 6 guides, 34 glossary terms |
 | Dynamic routes | `app/asset-types/[slug]/page.tsx`, `app/case-types/[slug]/page.tsx`, `app/guides/[slug]/page.tsx` | Live — all 24 child slugs routed |
 | Hub pages | `app/valuation-types/page.tsx`, `app/asset-types/page.tsx`, `app/case-types/page.tsx`, `app/guides/page.tsx`, `app/glossary/page.tsx` | Live |
@@ -398,7 +398,7 @@ Pre-launch and post-launch SEO tasks cross-referenced to repo files.
 ### Infrastructure
 
 - [ ] **Netlify deploy** — connect repo; set production domain `valuationexpertwitness.co.uk` and `www.valuationexpertwitness.co.uk`
-- [ ] **DNS** — apex and www CNAME/A records pointing to Netlify (`middleware.ts` already 301-redirects apex → www)
+- [ ] **DNS** — apex and www CNAME/A records pointing to Netlify (apex → www canonicalization handled by Netlify Primary Domain setting)
 - [ ] **All env vars set** in Netlify production (see `.env.example`):
   - `NEXT_PUBLIC_SITE_URL=https://www.valuationexpertwitness.co.uk`
   - `NEXT_PUBLIC_FORMSPREE_FORM_ID`
