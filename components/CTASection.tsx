@@ -1,29 +1,31 @@
 import Link from "next/link";
 
 export default function CTASection({
-  title = "Instruct a Valuation Expert Witness Today",
-  description = "Submit your case details and we will match you with a qualified UK valuation expert witness across any asset type. Response within 1 business day.",
-  buttonText = "Instruct an Expert",
+  title = "Instruct a valuation expert witness",
+  description = "Send a brief enquiry and we will match you with a suitable UK valuation expert witness for your asset type. We aim to respond within one working day.",
+  buttonText = "Send an enquiry",
 }: {
   title?: string;
   description?: string;
   buttonText?: string;
 }) {
   return (
-    <section className="bg-accent py-14 md:py-16">
-      <div className="page-container text-center">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white break-words px-2 sm:px-0">
-          {title}
-        </h2>
-        <p className="mt-4 mx-auto max-w-2xl text-white/90 text-base sm:text-lg leading-relaxed break-words px-2 sm:px-0">
-          {description}
-        </p>
-        <Link
-          href="/contact"
-          className="mt-8 inline-flex min-h-[44px] w-full max-w-xs sm:w-auto sm:max-w-none items-center justify-center rounded-[4px] bg-primary px-8 py-3 text-base font-semibold text-white shadow-md hover:bg-primary/90 transition-colors"
-        >
-          {buttonText}
-        </Link>
+    <section className="border-y border-border bg-primary py-12 md:py-14">
+      <div className="page-container grid gap-8 lg:grid-cols-12 lg:items-end">
+        <div className="lg:col-span-8">
+          <p className="font-label text-accent mb-3">Next step</p>
+          <h2 className="font-heading text-xl font-bold text-white break-words sm:text-2xl md:text-3xl">
+            {title}
+          </h2>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/75 sm:text-base">
+            {description}
+          </p>
+        </div>
+        <div className="lg:col-span-4 lg:flex lg:justify-end">
+          <Link href="/contact" className="btn-primary w-full sm:w-auto">
+            {buttonText}
+          </Link>
+        </div>
       </div>
     </section>
   );

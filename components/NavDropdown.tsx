@@ -49,13 +49,13 @@ export default function NavDropdown({
   if (mobile) {
     return (
       <div>
-        <p className="text-xs font-bold uppercase tracking-wider text-primary mb-2">{label}</p>
+        <p className="font-label text-muted mb-2">{label}</p>
         <ul className="space-y-1">
           {viewAll && (
             <li>
               <Link
                 href={viewAll.href}
-                className="block min-h-[44px] flex items-center px-2 text-body font-semibold hover:text-primary transition-colors"
+                className="flex min-h-[44px] items-center px-2 font-semibold text-body transition-colors hover:text-primary"
                 onClick={onNavigate}
               >
                 {viewAll.label}
@@ -66,7 +66,7 @@ export default function NavDropdown({
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="block min-h-[44px] flex items-center px-2 text-body hover:text-primary transition-colors"
+                className="flex min-h-[44px] items-center px-2 text-body transition-colors hover:text-primary"
                 onClick={onNavigate}
               >
                 {link.label}
@@ -87,7 +87,11 @@ export default function NavDropdown({
     >
       <button
         type="button"
-        className="flex items-center gap-1 px-2 py-2 text-sm font-medium text-body hover:text-primary transition-colors whitespace-nowrap min-h-[44px]"
+        className={`inline-flex min-h-[44px] items-center gap-1 border-b-2 px-3 text-sm font-medium transition-colors whitespace-nowrap ${
+          isOpen
+            ? "border-accent text-primary"
+            : "border-transparent text-body hover:border-accent hover:text-primary"
+        }`}
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-controls={panelId}
@@ -95,7 +99,7 @@ export default function NavDropdown({
       >
         {label}
         <svg
-          className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          className={`h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -109,16 +113,16 @@ export default function NavDropdown({
         <div
           id={panelId}
           role="menu"
-          className={`absolute top-full z-50 pt-1 ${
+          className={`absolute top-full z-50 pt-0 ${
             align === "right" ? "right-0 left-auto" : "left-0"
           }`}
         >
-          <div className="min-w-[12rem] max-w-[min(20rem,calc(100vw-2rem))] rounded-[8px] border border-border bg-white py-2 shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
+          <div className="min-w-[13rem] max-w-[min(20rem,calc(100vw-2rem))] border border-border bg-white py-2 shadow-[var(--shadow-lift)]">
             {viewAll && (
               <Link
                 href={viewAll.href}
                 role="menuitem"
-                className="block px-4 py-2.5 text-sm font-semibold text-primary hover:bg-section-alt transition-colors"
+                className="block px-4 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-section-alt"
                 onClick={onClose}
               >
                 {viewAll.label}
@@ -131,7 +135,7 @@ export default function NavDropdown({
                   <Link
                     href={link.href}
                     role="menuitem"
-                    className="block px-4 py-2.5 text-sm text-body hover:bg-section-alt hover:text-primary transition-colors"
+                    className="block px-4 py-2.5 text-sm text-body transition-colors hover:bg-section-alt hover:text-primary"
                     onClick={onClose}
                   >
                     {link.label}
@@ -145,7 +149,7 @@ export default function NavDropdown({
                 <Link
                   href={href}
                   role="menuitem"
-                  className="block px-4 py-2.5 text-sm font-medium text-accent hover:bg-section-alt transition-colors"
+                  className="block px-4 py-2.5 text-sm font-medium text-highlight transition-colors hover:bg-section-alt"
                   onClick={onClose}
                 >
                   Overview →

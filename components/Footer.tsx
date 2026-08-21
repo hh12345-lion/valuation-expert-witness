@@ -6,96 +6,83 @@ import {
   caseTypeNavLinks,
   resourcesNavLinks,
 } from "@/lib/data/nav";
-import { SITE_EMAIL, UK_SERVICE_SCOPE } from "@/lib/site";
+import { SITE_EMAIL, SITE_NAME, UK_SERVICE_SCOPE } from "@/lib/site";
 
-const assetLinks = [
-  ...assetTypeNavLinks.slice(0, 5),
-  { label: "View all 8", href: "/asset-types" },
-];
-
-const caseLinks = [
-  ...caseTypeNavLinks.slice(0, 5),
-  { label: "View all 10", href: "/case-types" },
+const compactLinks = [
+  ...serviceNavLinks.slice(0, 3),
+  ...assetTypeNavLinks.slice(0, 2),
+  ...caseTypeNavLinks.slice(0, 2),
+  ...resourcesNavLinks.slice(0, 3),
+  { label: "Valuation types", href: "/valuation-types" },
+  { label: "How to instruct", href: "/how-to-instruct" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-white">
-      <div className="page-container py-12 md:py-16 pb-[max(3rem,env(safe-area-inset-bottom))]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 min-w-0">
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-white/90 mb-4">Services</h3>
-            <ul className="space-y-2">
-              {serviceNavLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-white/90 mb-4">Asset Types</h3>
-            <ul className="space-y-2">
-              {assetLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-white/90 mb-4">Case Types</h3>
-            <ul className="space-y-2">
-              {caseLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-white/90 mb-4">Resources</h3>
-            <ul className="space-y-2">
-              {resourcesNavLinks.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-white/70 hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link href="/valuation-types" className="text-sm text-white/70 hover:text-white transition-colors">
-                  Valuation Types Guide
-                </Link>
-              </li>
-            </ul>
-          </div>
+    <footer className="mt-auto border-t border-border bg-section-alt">
+      {/* Split band: ink enquiry panel + mist link field — not dark mega-grid or cream accent-top */}
+      <div className="grid lg:grid-cols-12">
+        <div className="bg-primary px-6 py-10 text-white sm:px-8 lg:col-span-4 lg:px-10 lg:py-12">
+          <p className="font-heading text-xl leading-snug sm:text-2xl">{SITE_NAME}</p>
+          <p className="font-label mt-2 text-white/50">United Kingdom instruction service</p>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
+            Valuation expert witnesses for solicitors instructing in England and Wales, Scotland,
+            Northern Ireland, and UK-seated arbitration.
+          </p>
+          <a
+            href={`mailto:${SITE_EMAIL}`}
+            className="mt-6 inline-block break-all text-sm font-semibold text-accent transition-colors hover:text-white"
+          >
+            {SITE_EMAIL}
+          </a>
+          <Link
+            href="/contact"
+            className="mt-6 inline-flex min-h-[44px] items-center border border-accent bg-accent px-5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
+          >
+            Send an enquiry
+          </Link>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/20">
-          <p className="text-sm text-white/60 leading-relaxed max-w-3xl">
+        <div className="page-container py-10 lg:col-span-8 lg:max-w-none lg:px-10 lg:py-12">
+          <p className="font-label text-muted mb-4">Browse</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {compactLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-sm text-body transition-colors hover:text-accent"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-8 max-w-2xl text-xs leading-relaxed text-muted">
             {UK_SERVICE_SCOPE} We are not a law firm and do not provide legal advice.
           </p>
-          <p className="mt-3 text-sm text-white/60">
-            <a href={`mailto:${SITE_EMAIL}`} className="hover:text-white transition-colors">
-              {SITE_EMAIL}
-            </a>
-          </p>
-          <div className="mt-4 flex flex-wrap gap-4 text-sm text-white/60">
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
+
+          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-6 text-sm text-muted">
+            <Link href="/privacy" className="hover:text-primary transition-colors">
+              Privacy policy
+            </Link>
+            <Link href="/cookies" className="hover:text-primary transition-colors">
+              Cookie policy
+            </Link>
             <CookieSettingsLink />
-            <Link href="/terms" className="hover:text-white transition-colors">Terms of Use</Link>
-            <Link href="/what-is-a-valuation-expert-witness" className="hover:text-white transition-colors">What Is a Valuation Expert Witness?</Link>
+            <Link href="/terms" className="hover:text-primary transition-colors">
+              Terms of use
+            </Link>
+            <Link
+              href="/what-is-a-valuation-expert-witness"
+              className="hover:text-primary transition-colors"
+            >
+              What is a valuation expert witness?
+            </Link>
           </div>
-          <p className="mt-4 text-sm text-white/50">
-            &copy; 2026 ValuationExpertWitness. England and Wales.
+
+          <p className="mt-4 text-xs text-muted">
+            &copy; 2026 {SITE_NAME}. England and Wales.
           </p>
         </div>
       </div>

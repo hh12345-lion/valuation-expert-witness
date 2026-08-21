@@ -4,23 +4,23 @@ import CTASection from "@/components/CTASection";
 
 const quickLinks = [
   {
-    title: "Asset Types",
-    description: "Business, property, IP, plant, art, and 8 specialist asset guides.",
+    title: "Asset types",
+    description: "Business, property, IP, plant, art, and specialist asset guides.",
     href: "/asset-types",
   },
   {
-    title: "Case Types",
-    description: "Shareholder disputes, divorce, CPO, IP infringement, and 10 case guides.",
+    title: "Case types",
+    description: "Shareholder disputes, divorce, CPO, IP, and related case guides.",
     href: "/case-types",
   },
   {
-    title: "Valuation Types",
+    title: "Valuation types",
     description: "The complete guide to valuation in UK litigation.",
     href: "/valuation-types",
   },
   {
-    title: "Instruct an Expert",
-    description: "Submit your case details. Response within 1 business day.",
+    title: "Instruct an expert",
+    description: "Send a brief enquiry. We aim to reply within one working day.",
     href: "/contact",
   },
 ];
@@ -29,46 +29,31 @@ export default function NotFound() {
   return (
     <>
       <PageHero
-        title="Page Not Found"
-        subtitle="The page you requested does not exist or may have been moved. Use the resources below to find valuation expert witness guidance."
+        title="Page not found"
+        subtitle="That address does not exist or may have moved. Use the links below for valuation expert witness guidance."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "404" }]}
       />
-      <section className="py-14 md:py-20">
+      <section className="py-14 md:py-16">
         <div className="page-container min-w-0">
-          <div className="text-center mb-12">
-            <p className="text-7xl md:text-8xl font-bold text-accent leading-none">404</p>
-            <p className="mt-4 text-body text-lg max-w-xl mx-auto leading-relaxed">
-              We could not locate that URL. If you were looking for valuation expert witness
-              support for litigation or arbitration, start from one of the sections below.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+          <p className="font-heading mb-10 text-6xl font-bold text-accent md:text-7xl">404</p>
+          <div className="mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {quickLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="group rounded-[8px] border border-border bg-white p-5 shadow-[var(--shadow-card)] hover:border-accent transition-colors min-h-[44px]"
+                className="group min-h-[44px] border-l-3 border-accent bg-white px-5 py-5 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-lift)]"
+                style={{ borderLeftWidth: 3 }}
               >
-                <h2 className="font-bold text-heading group-hover:text-accent transition-colors">
+                <h2 className="font-heading font-bold text-heading group-hover:text-accent">
                   {link.title}
                 </h2>
-                <p className="mt-2 text-sm text-body leading-relaxed">{link.description}</p>
-                <span className="mt-3 inline-block text-sm font-semibold text-accent">
-                  View section
-                </span>
+                <p className="mt-2 text-sm leading-relaxed text-body">{link.description}</p>
               </Link>
             ))}
           </div>
-
-          <div className="text-center">
-            <Link
-              href="/"
-              className="inline-flex min-h-[44px] items-center justify-center rounded-[4px] bg-accent px-8 py-3 text-base font-semibold text-white hover:bg-accent/90 transition-colors"
-            >
-              Return to Homepage
-            </Link>
-          </div>
+          <Link href="/" className="btn-primary">
+            Return home
+          </Link>
         </div>
       </section>
       <CTASection />

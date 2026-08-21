@@ -2,16 +2,18 @@ import Link from "next/link";
 
 export default function AlertBanner() {
   return (
-    <div className="bg-accent/10 border-b border-accent/30">
-      <div className="page-container py-3">
-        <p className="text-sm md:text-base text-body leading-relaxed break-words">
-          <span className="font-semibold text-accent mr-1">Case Law Alert:</span>
-          Inspired Education v Crombie [2025] confirms that valuation expert evidence must use instructions consistent with standard market value definitions and demonstrate rigour and independence.{" "}
+    <div className="border-b border-highlight/30 bg-highlight/10">
+      <div className="page-container py-2.5">
+        <p className="text-sm leading-relaxed text-body break-words">
+          <span className="mr-1 font-semibold text-highlight">Case law note:</span>
+          Inspired Education v Crombie [2025] confirms that valuation expert evidence must use
+          instructions consistent with standard market value definitions and show rigour and
+          independence.{" "}
           <Link
             href="/guides/valuation-expert-instruction-guide"
-            className="font-semibold text-accent underline hover:text-primary transition-colors"
+            className="font-semibold text-accent underline transition-colors hover:text-highlight"
           >
-            Read instruction guide
+            Read the instruction guide
           </Link>
         </p>
       </div>

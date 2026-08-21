@@ -12,16 +12,17 @@ export default function HubCard({
   return (
     <Link
       href={href}
-      className="group rounded-[8px] border border-border bg-white p-6 shadow-[var(--shadow-card)] hover:border-accent hover:shadow-md transition-all flex flex-col min-h-[44px]"
+      className="group flex min-h-[44px] flex-col border-l-3 border-accent bg-white px-5 py-5 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-lift)]"
+      style={{ borderLeftWidth: 3 }}
     >
-      <h2 className="text-base sm:text-lg font-bold text-heading group-hover:text-accent transition-colors break-words">
+      <h2 className="font-heading text-base font-bold text-heading break-words transition-colors group-hover:text-accent sm:text-lg">
         {title}
       </h2>
-      <p className="mt-3 text-body text-sm leading-relaxed flex-1 break-words">
+      <p className="mt-3 flex-1 text-sm leading-relaxed text-body break-words">
         {description}
       </p>
       <span className="mt-4 text-sm font-semibold text-accent">
-        Read more →
+        View details →
       </span>
     </Link>
   );

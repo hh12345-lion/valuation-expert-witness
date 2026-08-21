@@ -29,7 +29,7 @@ export default function DetailPageLayout({
         <div className="page-container">
           <div className="max-w-3xl min-w-0">
             {paragraphs.map((p, i) => (
-              <p key={i} className="text-body leading-relaxed mb-4">
+              <p key={i} className="mb-4 leading-relaxed text-body">
                 {p}
               </p>
             ))}
@@ -39,9 +39,9 @@ export default function DetailPageLayout({
             <div className="mt-10 max-w-3xl space-y-8">
               {tables.map((table) => (
                 <div key={table.title}>
-                  <h2 className="text-xl font-bold text-heading mb-4">{table.title}</h2>
-                  <div className="table-scroll rounded-[8px] border border-border bg-white shadow-[var(--shadow-card)]">
-                    <table className="w-full text-sm min-w-[32rem]">
+                  <h2 className="font-heading mb-4 text-xl font-bold text-heading">{table.title}</h2>
+                  <div className="table-scroll border border-border bg-white">
+                    <table className="w-full min-w-[32rem] text-sm">
                       <thead>
                         <tr className="bg-primary text-white">
                           {table.headers.map((header) => (
@@ -60,7 +60,7 @@ export default function DetailPageLayout({
                             {row.map((cell, cellIndex) => (
                               <td
                                 key={cellIndex}
-                                className="px-4 py-3 text-body border-t border-border"
+                                className="border-t border-border px-4 py-3 text-body"
                               >
                                 {cell}
                               </td>
@@ -76,25 +76,24 @@ export default function DetailPageLayout({
           )}
 
           {relatedLinks && relatedLinks.length > 0 && (
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {relatedLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-[8px] border border-border bg-white p-5 shadow-[var(--shadow-card)] hover:border-accent transition-colors min-h-[44px]"
+                  className="min-h-[44px] border-l-3 border-accent bg-white px-5 py-4 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-lift)]"
+                  style={{ borderLeftWidth: 3 }}
                 >
-                  <p className="text-xs font-semibold uppercase tracking-wider text-accent mb-1">
-                    {link.type}
-                  </p>
-                  <p className="font-semibold text-heading">{link.label}</p>
+                  <p className="font-label text-accent mb-1">{link.type}</p>
+                  <p className="font-heading font-semibold text-heading">{link.label}</p>
                 </Link>
               ))}
             </div>
           )}
 
           <div className="mt-14 max-w-3xl">
-            <h2 className="text-2xl font-bold text-heading mb-6">
-              Frequently Asked Questions
+            <h2 className="font-heading mb-6 text-2xl font-bold text-heading">
+              Frequently asked questions
             </h2>
             <FAQAccordion faqs={faqs} />
           </div>

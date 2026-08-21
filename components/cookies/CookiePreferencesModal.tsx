@@ -153,21 +153,21 @@ export default function CookiePreferencesModal({
             onClick={() => onSave(prefs)}
             className="min-h-[44px] flex-1 rounded-[4px] bg-accent px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent/90 transition-colors"
           >
-            Save Preferences
+            Save preferences
           </button>
           <button
             type="button"
             onClick={onAcceptAll}
             className="min-h-[44px] flex-1 rounded-[4px] border border-border px-4 py-2.5 text-sm font-semibold text-heading hover:border-accent transition-colors"
           >
-            Accept All
+            Accept all
           </button>
           <button
             type="button"
             onClick={onRejectNonEssential}
             className="min-h-[44px] flex-1 rounded-[4px] border border-border px-4 py-2.5 text-sm font-semibold text-body hover:border-primary transition-colors"
           >
-            Reject Non-Essential
+            Reject non-essential
           </button>
         </div>
       </div>

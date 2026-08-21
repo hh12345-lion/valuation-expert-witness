@@ -2,16 +2,16 @@
 
 import { useCookieConsent } from "./CookieConsentProvider";
 
-export default function CookieSettingsLink() {
+export default function CookieSettingsLink({
+  className = "text-sm text-muted hover:text-primary transition-colors text-left",
+}: {
+  className?: string;
+}) {
   const { openPreferences } = useCookieConsent();
 
   return (
-    <button
-      type="button"
-      onClick={openPreferences}
-      className="text-sm text-white/60 hover:text-white transition-colors text-left"
-    >
-      Cookie Settings
+    <button type="button" onClick={openPreferences} className={className}>
+      Cookie settings
     </button>
   );
 }

@@ -12,37 +12,39 @@ export default function PageHero({
   breadcrumbs?: Breadcrumb[];
 }) {
   return (
-    <section className="bg-primary py-10 sm:py-14 md:py-20">
-      <div className="page-container">
+    <section className="surface-grid border-b border-border">
+      <div className="page-container py-10 sm:py-14 md:py-16">
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav aria-label="Breadcrumb" className="mb-4">
-            <ol className="flex flex-wrap items-center gap-1 text-xs sm:text-sm text-white/60">
+          <nav aria-label="Breadcrumb" className="mb-5">
+            <ol className="flex flex-wrap items-center gap-1 text-xs sm:text-sm text-muted">
               {breadcrumbs.map((crumb, i) => (
                 <li key={i} className="flex items-center gap-1 max-w-full">
                   {i > 0 && <span aria-hidden="true">/</span>}
                   {crumb.href ? (
                     <Link
                       href={crumb.href}
-                      className="hover:text-white/80 transition-colors break-words"
+                      className="transition-colors hover:text-accent break-words"
                     >
                       {crumb.label}
                     </Link>
                   ) : (
-                    <span className="text-white/80 break-words">{crumb.label}</span>
+                    <span className="text-body break-words">{crumb.label}</span>
                   )}
                 </li>
               ))}
             </ol>
           </nav>
         )}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight break-words">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="mt-4 max-w-3xl text-sm sm:text-base md:text-lg text-white/80 leading-relaxed break-words">
-            {subtitle}
-          </p>
-        )}
+        <div className="rule-accent max-w-4xl pl-5 animate-fade-rise">
+          <h1 className="font-heading text-2xl font-bold leading-tight text-heading break-words sm:text-3xl md:text-4xl">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-body break-words sm:text-base md:text-lg">
+              {subtitle}
+            </p>
+          )}
+        </div>
       </div>
     </section>
   );

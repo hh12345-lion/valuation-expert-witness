@@ -3,22 +3,14 @@ import ContactForm from "@/components/ContactForm";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { createMetadata } from "@/lib/metadata";
-import { SITE_EMAIL, UK_SERVICE_SCOPE } from "@/lib/site";
+import { SITE_EMAIL } from "@/lib/site";
 
 export const metadata = createMetadata({
-  title: "Instruct a Valuation Expert Witness | Contact",
+  title: "Instruct a Valuation Expert Witness | Enquiry",
   description:
-    "Instruct a valuation expert witness for UK litigation. All asset types, all expert disciplines. Response within 1 business day.",
+    "Send a brief enquiry to instruct a valuation expert witness for UK litigation. All asset types. Response within one working day.",
   path: "/contact",
 });
-
-const trustPoints = [
-  "United Kingdom proceedings only (England, Wales, Scotland, Northern Ireland)",
-  "All asset types covered",
-  "Forensic accountants, RICS surveyors and specialist valuers",
-  "CPR Part 35 and FPR Part 25 compliant",
-  "Response within 1 business day",
-];
 
 export default function ContactPage() {
   return (
@@ -30,40 +22,41 @@ export default function ContactPage() {
         ])}
       />
       <PageHero
-        title="Instruct a Valuation Expert Witness"
-        subtitle="Submit your case details for a United Kingdom litigation or arbitration matter. We will match you with a qualified valuation expert witness across any asset type and UK legal context."
+        title="Instruct a valuation expert witness"
+        subtitle="A short enquiry is enough. Tell us the asset type, forum, and what you need — we will reply within one working day."
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Contact" },
+          { label: "Enquiry" },
         ]}
       />
       <section className="py-12 md:py-16">
-        <div className="page-container min-w-0">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div className="lg:col-span-2 min-w-0">
-              <p className="text-body leading-relaxed mb-6 max-w-2xl">
-                {UK_SERVICE_SCOPE} Use the form below for UK matters only. For general enquiries, email{" "}
-                <a href={`mailto:${SITE_EMAIL}`} className="text-accent font-semibold underline hover:text-primary">
+        <div className="page-container">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+            <div className="min-w-0 lg:col-span-6">
+              <p className="mb-6 max-w-lg text-sm leading-relaxed text-body">
+                For UK matters only (England and Wales, Scotland, Northern Ireland, and UK-seated
+                arbitration). Or email{" "}
+                <a
+                  href={`mailto:${SITE_EMAIL}`}
+                  className="font-semibold text-accent underline hover:text-highlight"
+                >
                   {SITE_EMAIL}
                 </a>
                 .
               </p>
               <ContactForm />
             </div>
-            <aside className="rounded-[8px] border border-border bg-section-alt p-6 h-fit min-w-0">
-              <h2 className="text-lg font-bold text-heading mb-4">UK Service Scope</h2>
-              <p className="text-sm text-body leading-relaxed mb-6">
-                We instruct valuation expert witnesses for England and Wales civil and family proceedings, Scottish Court of Session and Sheriff Court matters, Northern Ireland courts, and UK-seated arbitration. Enquiries relating to US, EU, or other non-UK jurisdictions cannot be processed through this service.
-              </p>
-              <h2 className="text-lg font-bold text-heading mb-4">Why Instruct Through Us</h2>
-              <ul className="space-y-3">
-                {trustPoints.map((point) => (
-                  <li key={point} className="flex items-start gap-2 text-sm text-body">
-                    <span className="text-accent font-bold mt-0.5" aria-hidden="true">&#10003;</span>
-                    {point}
-                  </li>
-                ))}
+            <aside className="rule-accent h-fit border border-border bg-section-alt p-6 pl-5 lg:col-span-5 lg:col-start-8">
+              <h2 className="font-heading text-lg font-bold text-heading">What we need</h2>
+              <ul className="mt-4 space-y-3 text-sm leading-relaxed text-body">
+                <li>Your name and work email</li>
+                <li>Firm (if instructing as a solicitor)</li>
+                <li>A short note on the asset and forum</li>
               </ul>
+              <p className="mt-6 border-t border-border pt-4 text-xs leading-relaxed text-muted">
+                We aim to respond within one working day. Urgent hearing dates should be mentioned in
+                the enquiry.
+              </p>
             </aside>
           </div>
         </div>

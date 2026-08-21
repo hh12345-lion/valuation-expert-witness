@@ -9,6 +9,7 @@ import {
   caseTypeNavLinks,
   resourcesNavLinks,
 } from "@/lib/data/nav";
+import { SITE_EMAIL } from "@/lib/site";
 
 const DROPDOWN_IDS = {
   services: "services",
@@ -38,25 +39,68 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm pt-[env(safe-area-inset-top)]">
-      <div className="page-container">
-        <div className="flex h-16 lg:h-[72px] items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 pt-[env(safe-area-inset-top)]">
+      {/* Single ink band — not a cream utility strip, dual-tier brand bar, or plain white sticky */}
+      <div className="bg-primary text-white">
+        <div className="page-container flex h-14 items-center justify-between gap-4 lg:h-16">
           <Link
             href="/"
-            className="shrink-0 text-base sm:text-lg font-bold text-primary hover:text-primary/80 transition-colors max-w-[55vw] sm:max-w-none truncate sm:overflow-visible sm:whitespace-normal"
+            className="group flex min-w-0 items-center gap-3"
             onMouseEnter={() => setOpenDropdown(null)}
           >
-            ValuationExpertWitness<span className="text-accent">.co.uk</span>
+            <span
+              className="flex h-9 w-9 shrink-0 items-center justify-center border border-accent/60 bg-primary-soft font-heading text-xs font-bold tracking-wide text-accent"
+              aria-hidden="true"
+            >
+              VE
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate font-heading text-base leading-tight sm:text-lg">
+                Valuation Expert Witness
+              </span>
+              <span className="font-label hidden text-white/50 sm:block">
+                UK courts &amp; arbitration · {SITE_EMAIL.replace("cases@", "")}
+              </span>
+            </span>
           </Link>
 
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/contact"
+              className="hidden min-h-[40px] items-center border border-accent bg-accent px-4 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:inline-flex"
+              onMouseEnter={() => setOpenDropdown(null)}
+            >
+              Instruct
+            </Link>
+            <button
+              type="button"
+              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center border border-white/25 text-white xl:hidden"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                {menuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-b border-border bg-surface">
+        <div className="page-container">
           <nav
-            className="hidden xl:flex items-center gap-0.5 flex-1 justify-center"
+            className="hidden h-12 items-center gap-1 xl:flex"
             aria-label="Main navigation"
             onMouseLeave={() => setOpenDropdown(null)}
           >
             <Link
               href="/"
-              className="px-2 py-2 text-sm font-medium text-body hover:text-primary transition-colors whitespace-nowrap min-h-[44px] flex items-center"
+              className="inline-flex min-h-[44px] items-center border-b-2 border-transparent px-3 text-sm font-medium text-body transition-colors hover:border-accent hover:text-primary"
               onMouseEnter={() => setOpenDropdown(null)}
             >
               Home
@@ -65,28 +109,28 @@ export default function Header() {
               label="Services"
               href="/services"
               links={serviceNavLinks}
-              viewAll={{ label: "All Services", href: "/services" }}
+              viewAll={{ label: "All services", href: "/services" }}
               {...dropdownProps(DROPDOWN_IDS.services)}
             />
             <Link
               href="/valuation-types"
-              className="px-2 py-2 text-sm font-medium text-body hover:text-primary transition-colors whitespace-nowrap min-h-[44px] flex items-center"
+              className="inline-flex min-h-[44px] items-center border-b-2 border-transparent px-3 text-sm font-medium text-body transition-colors hover:border-accent hover:text-primary"
               onMouseEnter={() => setOpenDropdown(null)}
             >
-              Valuation Types
+              Valuation types
             </Link>
             <NavDropdown
-              label="Asset Types"
+              label="Asset types"
               href="/asset-types"
               links={assetTypeNavLinks}
-              viewAll={{ label: "All Asset Types", href: "/asset-types" }}
+              viewAll={{ label: "All asset types", href: "/asset-types" }}
               {...dropdownProps(DROPDOWN_IDS.assetTypes)}
             />
             <NavDropdown
-              label="Case Types"
+              label="Case types"
               href="/case-types"
               links={caseTypeNavLinks}
-              viewAll={{ label: "All Case Types", href: "/case-types" }}
+              viewAll={{ label: "All case types", href: "/case-types" }}
               {...dropdownProps(DROPDOWN_IDS.caseTypes)}
             />
             <NavDropdown
@@ -95,43 +139,20 @@ export default function Header() {
               align="right"
               {...dropdownProps(DROPDOWN_IDS.resources)}
             />
+            <span className="ml-auto font-label text-muted">England, Wales, Scotland &amp; NI</span>
           </nav>
-
-          <Link
-            href="/contact"
-            className="hidden sm:inline-flex min-h-[44px] items-center justify-center rounded-[4px] bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-accent/90 transition-colors shrink-0"
-            onMouseEnter={() => setOpenDropdown(null)}
-          >
-            Contact Us
-          </Link>
-
-          <button
-            type="button"
-            className="xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center rounded-[4px] border border-border text-primary"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              {menuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
         </div>
       </div>
 
       {menuOpen && (
         <nav
-          className="xl:hidden border-t border-border bg-white max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain"
+          className="border-b border-border bg-surface xl:hidden max-h-[calc(100dvh-7rem)] overflow-y-auto overscroll-contain"
           aria-label="Mobile navigation"
         >
-          <div className="px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] space-y-6">
+          <div className="space-y-6 px-4 py-5 pb-[max(1rem,env(safe-area-inset-bottom))]">
             <Link
               href="/"
-              className="block min-h-[44px] flex items-center px-2 text-body font-medium hover:text-primary transition-colors"
+              className="flex min-h-[44px] items-center px-2 font-medium text-body transition-colors hover:text-primary"
               onClick={closeMenu}
             >
               Home
@@ -139,7 +160,7 @@ export default function Header() {
             <NavDropdown
               label="Services"
               links={serviceNavLinks}
-              viewAll={{ label: "All Services", href: "/services" }}
+              viewAll={{ label: "All services", href: "/services" }}
               onNavigate={closeMenu}
               mobile
               isOpen={false}
@@ -148,15 +169,15 @@ export default function Header() {
             />
             <Link
               href="/valuation-types"
-              className="block min-h-[44px] flex items-center px-2 text-body font-medium hover:text-primary transition-colors"
+              className="flex min-h-[44px] items-center px-2 font-medium text-body transition-colors hover:text-primary"
               onClick={closeMenu}
             >
-              Valuation Types
+              Valuation types
             </Link>
             <NavDropdown
-              label="Asset Types"
+              label="Asset types"
               links={assetTypeNavLinks}
-              viewAll={{ label: "All Asset Types", href: "/asset-types" }}
+              viewAll={{ label: "All asset types", href: "/asset-types" }}
               onNavigate={closeMenu}
               mobile
               isOpen={false}
@@ -164,9 +185,9 @@ export default function Header() {
               onClose={() => {}}
             />
             <NavDropdown
-              label="Case Types"
+              label="Case types"
               links={caseTypeNavLinks}
-              viewAll={{ label: "All Case Types", href: "/case-types" }}
+              viewAll={{ label: "All case types", href: "/case-types" }}
               onNavigate={closeMenu}
               mobile
               isOpen={false}
@@ -184,10 +205,10 @@ export default function Header() {
             />
             <Link
               href="/contact"
-              className="flex min-h-[44px] w-full items-center justify-center rounded-[4px] bg-accent px-4 py-3 text-base font-semibold text-white hover:bg-accent/90 transition-colors"
+              className="flex min-h-[44px] w-full items-center justify-center bg-accent px-4 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
               onClick={closeMenu}
             >
-              Contact Us
+              Instruct an expert
             </Link>
           </div>
         </nav>

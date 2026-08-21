@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Literata, Outfit } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieConsentProvider from "@/components/cookies/CookieConsentProvider";
@@ -7,9 +7,15 @@ import ConsentModeInit from "@/components/cookies/ConsentModeInit";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const inter = Inter({
+const literata = Literata({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-literata",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
   display: "swap",
 });
 
@@ -47,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-GB" className={`${inter.variable} h-full`}>
+    <html lang="en-GB" className={`${literata.variable} ${outfit.variable} h-full`}>
       <body className="min-h-full flex flex-col antialiased">
         <ConsentModeInit />
         <CookieConsentProvider>

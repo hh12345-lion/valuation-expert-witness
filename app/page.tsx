@@ -1,6 +1,5 @@
 import Link from "next/link";
 import AlertBanner from "@/components/AlertBanner";
-import PageHero from "@/components/PageHero";
 import CTASection from "@/components/CTASection";
 import HubCard from "@/components/HubCard";
 import JsonLd from "@/components/JsonLd";
@@ -18,33 +17,32 @@ export const metadata = createMetadata({
 
 const disciplines = [
   {
-    title: "Forensic Accountants",
+    title: "Forensic accountants",
     description:
       "ACA and FCA qualified experts for business and share valuation, goodwill, intangible assets, and IP financial valuation in shareholder disputes, matrimonial proceedings, and HMRC challenges.",
     href: "/asset-types/business-share-valuation",
   },
   {
-    title: "RICS Chartered Surveyors",
+    title: "RICS chartered surveyors",
     description:
       "MRICS and FRICS registered valuers for property, land, compulsory purchase, lease renewal, and plant and machinery valuation under the RICS Red Book.",
     href: "/asset-types/property-land-valuation",
   },
   {
-    title: "Specialist Valuers",
+    title: "Specialist valuers",
     description:
       "Sector experts for art, antiques, jewellery, financial instruments, agricultural assets, cryptocurrency, and other specialist asset classes requiring niche market knowledge.",
     href: "/asset-types/specialist-assets",
   },
 ];
 
-const stats = [
-  { fact: "Valuation disciplines covered", figure: "3 expert types", source: "All asset classes" },
-  { fact: "Asset type pages", figure: "8 dedicated hubs", source: "Unique site structure" },
-  { fact: "Case type coverage", figure: "10 litigation contexts", source: "UK courts and tribunals" },
-  { fact: "Expert evidence framework", figure: "CPR Part 35 / FPR Part 25", source: "Civil Procedure Rules" },
-  { fact: "Property valuation standard", figure: "RICS Red Book (VPS 4)", source: "RICS" },
-  { fact: "S994 fair value", figure: "Minority discount typically disapplied", source: "Companies Act 2006" },
-  { fact: "Inspired Education v Crombie [2025]", figure: "Expert rigour and independence required", source: "EWHC 1236 (Ch)" },
+const facts = [
+  { label: "Disciplines", value: "Forensic, RICS, specialist" },
+  { label: "Asset hubs", value: "8 dedicated pages" },
+  { label: "Case contexts", value: "10 UK litigation types" },
+  { label: "Evidence rules", value: "CPR Part 35 / FPR Part 25" },
+  { label: "Property standard", value: "RICS Red Book (VPS 4)" },
+  { label: "S994 fair value", value: "Minority discount often disapplied" },
 ];
 
 export default function HomePage() {
@@ -52,125 +50,159 @@ export default function HomePage() {
     <>
       <JsonLd data={homepageSchema} />
       <AlertBanner />
-      <PageHero
-        title="Valuation Expert Witness Services for UK Solicitors & Law Firms"
-        subtitle="The broadest valuation expert witness service in the United Kingdom. Business valuation, property valuation, intellectual property, plant and machinery, art and chattels, financial instruments, and every specialist asset type for litigation and arbitration in England, Wales, Scotland, and Northern Ireland. CPR Part 35 compliant expert evidence across all three valuation disciplines."
-      />
-      <section className="py-12 md:py-16 border-b border-border">
-        <div className="page-container max-w-3xl min-w-0">
-          <h2 className="text-xl sm:text-2xl font-bold text-heading mb-4 break-words">
-            United Kingdom Valuation Expert Witness Instruction
-          </h2>
-          <p className="text-body leading-relaxed mb-4">
-            This website is built for UK litigation and arbitration only. We support solicitors and law firms instructing valuation expert witnesses in the High Court, County Court, Family Court, Employment Tribunal, Lands Tribunal, and other UK forums, including Scottish Court of Session proceedings and Northern Ireland courts.
-          </p>
-          <p className="text-body leading-relaxed mb-4">
-            Content, credentials, and valuation standards referenced throughout the site reflect United Kingdom practice: CPR Part 35 and FPR Part 25 for expert evidence; the RICS Red Book for property; Companies Act 2006 fair value for shareholder disputes; and HMRC market value concepts for tax matters. Professional designations such as ACA, FCA, MRICS, FRICS, and ICAEW Forensic Accreditation are UK qualifications.
-          </p>
-          <p className="text-body leading-relaxed">
-            We do not provide valuation expert witness referrals for proceedings outside the United Kingdom. If your matter involves foreign courts or non-UK regulatory bodies, you should instruct an expert qualified in that jurisdiction&apos;s rules of evidence and valuation practice.
-          </p>
-        </div>
-      </section>
-      <section className="py-8 bg-section-alt border-b border-border">
-        <div className="page-container text-center">
-          <Link
-            href="/contact"
-            className="inline-flex min-h-[44px] items-center justify-center rounded-[4px] bg-accent px-8 py-3 text-base font-semibold text-white hover:bg-accent/90 transition-colors"
-          >
-            Instruct an Expert
-          </Link>
-        </div>
-      </section>
 
-      <section className="py-14 md:py-20">
-        <div className="page-container min-w-0">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-heading mb-8 break-words">
-            Valuation Services Across All Asset Types
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {services.map((service) => (
-              <HubCard
-                key={service.id}
-                title={service.shortTitle}
-                description={service.description.slice(0, 120) + "..."}
-                href={`/services#${service.id}`}
-              />
-            ))}
+      {/* Asymmetric editorial hero — not a solid primary slab */}
+      <section className="surface-grid border-b border-border">
+        <div className="page-container grid gap-10 py-12 md:py-16 lg:grid-cols-12 lg:gap-12 lg:py-20">
+          <div className="lg:col-span-7 animate-fade-rise">
+            <p className="font-label text-accent mb-4">United Kingdom · solicitors &amp; counsel</p>
+            <h1 className="font-heading text-3xl font-bold leading-[1.15] text-heading sm:text-4xl md:text-5xl">
+              Valuation Expert Witness
+            </h1>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-body sm:text-lg">
+              Instruction support for business, property, IP, plant and machinery, art, and specialist
+              assets in UK litigation and arbitration. CPR Part 35 compliant expert evidence across
+              forensic accounting, RICS valuation, and niche disciplines.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link href="/contact" className="btn-primary">
+                Instruct an expert
+              </Link>
+              <Link href="/how-to-instruct" className="btn-ghost">
+                How to instruct
+              </Link>
+            </div>
           </div>
+
+          <aside className="border border-border bg-white p-6 shadow-[var(--shadow-lift)] lg:col-span-5 lg:self-start">
+            <p className="font-label text-muted mb-4">UK forums covered</p>
+            <ul className="space-y-3 text-sm leading-relaxed text-body">
+              <li className="rule-accent pl-3">High Court, County Court, and Family Court</li>
+              <li className="rule-accent pl-3">Employment Tribunal and Lands Tribunal</li>
+              <li className="rule-accent pl-3">Court of Session and Sheriff Court (Scotland)</li>
+              <li className="rule-accent pl-3">Northern Ireland courts and UK-seated arbitration</li>
+            </ul>
+            <p className="mt-5 border-t border-border pt-4 text-xs leading-relaxed text-muted">
+              We do not accept instructions for proceedings outside the United Kingdom.
+            </p>
+          </aside>
         </div>
       </section>
 
-      <section className="py-14 md:py-20 bg-section-alt">
-        <div className="page-container min-w-0">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-heading mb-8 break-words">
-            Three Expert Disciplines, Every Asset Type
+      <section className="border-b border-border py-10 md:py-12">
+        <div className="page-container max-w-3xl">
+          <h2 className="font-heading text-xl font-bold text-heading sm:text-2xl">
+            United Kingdom valuation expert witness instruction
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {disciplines.map((card) => (
+          <p className="mt-4 text-body leading-relaxed">
+            This website is for UK litigation and arbitration only. We support solicitors and law
+            firms instructing valuation expert witnesses under CPR Part 35 and FPR Part 25, with
+            reference to the RICS Red Book, Companies Act 2006 fair value, and HMRC market value
+            concepts. Professional designations such as ACA, FCA, MRICS, FRICS, and ICAEW Forensic
+            Accreditation are UK qualifications.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-14 md:py-16">
+        <div className="page-container">
+          <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <h2 className="font-heading text-xl font-bold text-heading sm:text-2xl md:text-3xl">
+              Services by valuation need
+            </h2>
+            <Link href="/services" className="text-sm font-semibold text-accent hover:text-highlight">
+              All services →
+            </Link>
+          </div>
+          <ol className="divide-y divide-border border-y border-border">
+            {services.map((service, index) => (
+              <li key={service.id}>
+                <Link
+                  href={`/services#${service.id}`}
+                  className="group flex flex-col gap-2 py-5 transition-colors sm:flex-row sm:items-baseline sm:gap-6"
+                >
+                  <span className="font-label shrink-0 text-accent">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-heading text-lg font-bold text-heading group-hover:text-accent">
+                    {service.shortTitle}
+                  </span>
+                  <span className="text-sm leading-relaxed text-body sm:ml-auto sm:max-w-md sm:text-right">
+                    {service.description.slice(0, 110)}…
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="surface-grid border-y border-border py-14 md:py-16">
+        <div className="page-container">
+          <h2 className="font-heading text-xl font-bold text-heading mb-8 sm:text-2xl md:text-3xl">
+            Three expert disciplines
+          </h2>
+          <div className="grid gap-0 border border-border bg-white md:grid-cols-3">
+            {disciplines.map((card, i) => (
               <Link
                 key={card.href}
                 href={card.href}
-                className="rounded-[8px] border border-border bg-white p-6 shadow-[var(--shadow-card)] hover:border-accent transition-colors"
+                className={`block p-6 transition-colors hover:bg-section-alt ${
+                  i < disciplines.length - 1 ? "border-b border-border md:border-b-0 md:border-r" : ""
+                }`}
               >
-                <h3 className="text-lg font-bold text-heading">{card.title}</h3>
-                <p className="mt-3 text-body leading-relaxed">{card.description}</p>
-                <span className="mt-4 inline-block text-sm font-semibold text-accent">Learn more</span>
+                <h3 className="font-heading text-lg font-bold text-heading">{card.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-body">{card.description}</p>
+                <span className="mt-4 inline-block text-sm font-semibold text-accent">
+                  Find out more →
+                </span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-14 md:py-20">
-        <div className="page-container min-w-0">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-heading mb-8 break-words">
-            Valuation Expert Witnesses by Asset Type
+      <section className="py-14 md:py-16">
+        <div className="page-container">
+          <h2 className="font-heading text-xl font-bold text-heading mb-8 sm:text-2xl md:text-3xl">
+            By asset type
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {assetTypes.map((asset) => (
               <HubCard
                 key={asset.slug}
                 title={asset.shortTitle}
-                description={asset.paragraphs[0].slice(0, 100) + "..."}
+                description={asset.paragraphs[0].slice(0, 100) + "…"}
                 href={`/asset-types/${asset.slug}`}
               />
             ))}
           </div>
-          <p className="mt-8 text-body leading-relaxed max-w-3xl">
-            Our dedicated asset type pages provide solicitors with targeted guidance on which expert discipline to instruct, the applicable valuation methodology, and the key legal contexts for each asset class.{" "}
-            <Link href="/valuation-types" className="text-accent font-semibold underline hover:text-primary">
-              Read the complete valuation types guide
+          <p className="mt-8 max-w-3xl text-body leading-relaxed">
+            Each asset page explains which discipline to instruct, the usual methodology, and the
+            main legal contexts.{" "}
+            <Link href="/valuation-types" className="font-semibold text-accent underline hover:text-highlight">
+              Read the valuation types guide
             </Link>
           </p>
         </div>
       </section>
 
-      <section className="py-14 md:py-20 bg-section-alt">
-        <div className="page-container min-w-0">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-heading mb-8 break-words">
-            UK Valuation Litigation: Key Facts
+      <section className="border-t border-border bg-primary py-12 md:py-14">
+        <div className="page-container">
+          <h2 className="font-heading text-xl font-bold text-white mb-8 sm:text-2xl">
+            Key facts for UK valuation litigation
           </h2>
-          <div className="table-scroll rounded-[8px] border border-border bg-white shadow-[var(--shadow-card)]">
-            <table className="w-full text-sm min-w-[36rem]">
-              <thead>
-                <tr className="bg-primary text-white">
-                  <th className="px-4 py-3 text-left font-semibold">Fact</th>
-                  <th className="px-4 py-3 text-left font-semibold">Detail</th>
-                  <th className="px-4 py-3 text-left font-semibold">Source</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.map((row, i) => (
-                  <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-section-alt"}>
-                    <td className="px-4 py-3 text-body border-t border-border">{row.fact}</td>
-                    <td className="px-4 py-3 text-body border-t border-border font-medium">{row.figure}</td>
-                    <td className="px-4 py-3 text-body border-t border-border">{row.source}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <dl className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {facts.map((fact) => (
+              <div key={fact.label} className="border-l-2 border-accent pl-4">
+                <dt className="font-label text-white/50">{fact.label}</dt>
+                <dd className="mt-1 text-sm font-medium text-white sm:text-base">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-8 text-xs text-white/50">
+            Inspired Education v Crombie [2025] EWHC 1236 (Ch) — expert rigour and independence required.
+          </p>
         </div>
       </section>
 
