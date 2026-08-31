@@ -79,7 +79,7 @@ export async function writeLeadToSheetSafely(
     console.error("Google Sheets write failed (soft-fail):", {
       context,
       error,
-      tab: process.env.GOOGLE_SHEET_TAB_NAME || "Sheet1",
+      tab: (process.env.GOOGLE_SHEET_TAB_NAME || "Sheet1").trim(),
     });
     return false;
   }

@@ -57,7 +57,12 @@ export default function ContactForm() {
         body: JSON.stringify(leadPayload),
       });
 
-      if (res.ok) {
+      const result = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        success?: boolean;
+      };
+
+      if (res.ok && (result.ok || result.success || res.status === 200)) {
         router.push("/thank-you");
         return;
       }
@@ -69,9 +74,7 @@ export default function ContactForm() {
 
       setStatus("error");
       setErrorMessage(
-        res.status === 503
-          ? "Lead delivery is not configured. Please email us directly."
-          : "Something went wrong. Please try again or email us directly."
+        "Something went wrong. Please try again or email us directly."
       );
     } catch {
       if (await submitToFormspree(form)) {

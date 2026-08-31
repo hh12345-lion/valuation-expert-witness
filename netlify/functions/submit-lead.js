@@ -1,8 +1,8 @@
 /**
- * Netlify Function backup: POST lead to n8n webhook (Lead_notification_setup.md).
- * Production prefers Next.js app/api/submit-lead/route.ts (webhook + soft-fail Sheets).
- * Env: Lead_notification_url, NEXT_PUBLIC_SITE_URL.
+ * Netlify backup for /api/submit-lead — soft webhook + soft Sheets.
+ * Production prefers Next.js app/api/submit-lead/route.ts.
  */
+
 const BRAND_NAME = "Valuation Expert Witness";
 
 const CORS_HEADERS = {
@@ -23,6 +23,113 @@ function getSiteDomain() {
   }
 }
 
+function getLeadNotificationUrl() {
+  return (
+    process.env.Lead_notification_url || process.env.LEAD_NOTIFICATION_URL
+  );
+}
+
+function normalizePrivateKey(raw) {
+  if (!raw) return undefined;
+  let key = String(raw).trim();
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'"))
+  ) {
+    key = key.slice(1, -1);
+  }
+  key = key.replace(/\\n/g, "\n");
+  if (!key.includes("BEGIN PRIVATE KEY")) return undefined;
+  return key;
+}
+
+function isGoogleSheetsConfigured() {
+  return Boolean(
+    process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL?.trim() &&
+      normalizePrivateKey(process.env.GOOGLE_PRIVATE_KEY) &&
+      process.env.GOOGLE_SHEET_ID?.trim()
+  );
+}
+
+function sanitize(str) {
+  return String(str || "")
+    .replace(/<[^>]*>/g, "")
+    .trim();
+}
+
+async function getAccessToken() {
+  const { JWT } = require("google-auth-library");
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL?.trim();
+  const privateKey = normalizePrivateKey(process.env.GOOGLE_PRIVATE_KEY);
+  if (!email || !privateKey) {
+    throw new Error("Missing Google service account credentials");
+  }
+  const client = new JWT({
+    email,
+    key: privateKey,
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+  });
+  const tokenResponse = await client.getAccessToken();
+  const token =
+    typeof tokenResponse === "string" ? tokenResponse : tokenResponse?.token;
+  if (!token) throw new Error("Failed to obtain Google access token");
+  return token;
+}
+
+async function appendLeadToSheet(payload) {
+  if (!isGoogleSheetsConfigured()) {
+    console.warn("[submit-lead fn] Sheets not configured — skip");
+    return false;
+  }
+
+  const spreadsheetId = process.env.GOOGLE_SHEET_ID.trim();
+  const sheetName = (process.env.GOOGLE_SHEET_TAB_NAME || "Sheet1").trim();
+  const formType =
+    String(payload.formType || "contact").toLowerCase() === "instruct"
+      ? "Instruct"
+      : "Contact";
+
+  const token = await getAccessToken();
+  const range = encodeURIComponent(`${sheetName}!A:A`);
+  const url =
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append` +
+    "?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS";
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      values: [
+        [
+          new Date().toISOString(),
+          BRAND_NAME,
+          formType,
+          sanitize(payload.fullName),
+          sanitize(payload.email).toLowerCase(),
+          sanitize(payload.phone),
+          sanitize(payload.organisation),
+          sanitize(payload.assetTypes),
+          sanitize(payload.legalContext),
+          sanitize(payload.expertDiscipline),
+          sanitize(payload.deadline),
+          sanitize(payload.urgency),
+          sanitize(payload.description || payload.message),
+        ],
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Google Sheets API error (${response.status}): ${await response.text()}`
+    );
+  }
+  return true;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 204, headers: CORS_HEADERS, body: "" };
@@ -33,18 +140,6 @@ exports.handler = async (event) => {
       statusCode: 405,
       headers: CORS_HEADERS,
       body: JSON.stringify({ error: "Method not allowed" }),
-    };
-  }
-
-  const webhookUrl =
-    process.env.Lead_notification_url || process.env.LEAD_NOTIFICATION_URL;
-
-  if (!webhookUrl) {
-    console.error("Lead_notification_url is not configured");
-    return {
-      statusCode: 503,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "Lead notification URL not configured" }),
     };
   }
 
@@ -69,6 +164,10 @@ exports.handler = async (event) => {
       : typeof body.description === "string"
         ? body.description.trim()
         : "";
+  const organisation =
+    typeof body.organisation === "string" ? body.organisation.trim() : "";
+  const formType =
+    typeof body.formType === "string" ? body.formType.trim() : "contact";
 
   if (!fullName || !email) {
     return {
@@ -78,46 +177,86 @@ exports.handler = async (event) => {
     };
   }
 
-  const fullNameOutbound = message
-    ? `${fullName} — ${message.slice(0, 500)}`
-    : fullName;
+  let forwarded = false;
+  const webhookUrl = getLeadNotificationUrl();
 
-  const payload = {
-    "Full Name": fullNameOutbound,
-    Email: email,
-    "Phone Number": phone,
-    "Brand name": BRAND_NAME,
-    domain: getSiteDomain(),
-  };
-
-  try {
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      const text = await response.text().catch(() => "");
-      console.error("Webhook failed:", response.status, text);
-      return {
-        statusCode: 502,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({ error: "Webhook request failed" }),
-      };
+  if (webhookUrl) {
+    const fullNameOutbound = message
+      ? `${fullName} — ${message.slice(0, 500)}`
+      : fullName;
+    try {
+      const res = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          "Full Name": fullNameOutbound,
+          Email: email.toLowerCase(),
+          "Phone Number": phone,
+          "Brand name": BRAND_NAME,
+          domain: getSiteDomain(),
+        }),
+      });
+      forwarded = res.ok;
+      if (!res.ok) {
+        console.error("Lead webhook failed:", res.status, await res.text());
+      }
+    } catch (err) {
+      console.error("Lead webhook error:", err);
     }
+  } else {
+    console.warn(
+      "[submit-lead fn] Lead_notification_url missing — continuing with Sheets fallback"
+    );
+  }
 
-    return {
-      statusCode: 200,
-      headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
-      body: JSON.stringify({ ok: true }),
-    };
+  let writtenToSheet = false;
+  try {
+    writtenToSheet = await appendLeadToSheet({
+      fullName,
+      email,
+      phone,
+      organisation,
+      description: message,
+      formType,
+      assetTypes: typeof body.assetTypes === "string" ? body.assetTypes : "",
+      legalContext:
+        typeof body.legalContext === "string" ? body.legalContext : "",
+      expertDiscipline:
+        typeof body.expertDiscipline === "string"
+          ? body.expertDiscipline
+          : "",
+      deadline: typeof body.deadline === "string" ? body.deadline : "",
+      urgency: typeof body.urgency === "string" ? body.urgency : "",
+    });
   } catch (err) {
-    console.error("Webhook fetch error:", err);
+    console.error("Google Sheets error (submit-lead fn):", {
+      message: err && err.message,
+      tab: (process.env.GOOGLE_SHEET_TAB_NAME || "Sheet1").trim(),
+    });
+  }
+
+  if (!forwarded && !writtenToSheet) {
     return {
-      statusCode: 502,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "Webhook request failed" }),
+      statusCode: 503,
+      headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        error: "Lead storage failed",
+        message:
+          "Set Lead_notification_url and/or Google Sheets env vars on Netlify.",
+        sheetsConfigured: isGoogleSheetsConfigured(),
+        webhookConfigured: Boolean(webhookUrl),
+      }),
     };
   }
+
+  return {
+    statusCode: 200,
+    headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      ok: true,
+      success: true,
+      forwarded,
+      writtenToSheet,
+    }),
+  };
 };
