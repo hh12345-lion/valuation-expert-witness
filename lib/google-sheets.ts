@@ -1,8 +1,8 @@
 import { google, sheets_v4 } from "googleapis";
 
-type CellValue = string | number | boolean | null;
+export type CellValue = string | number | boolean | null;
 
-interface SheetTarget {
+export interface SheetTarget {
   spreadsheetId?: string;
   sheetName?: string;
 }
@@ -24,6 +24,14 @@ function getAuthClient() {
 
 function getSheetsClient(): sheets_v4.Sheets {
   return google.sheets({ version: "v4", auth: getAuthClient() });
+}
+
+export function isGoogleSheetsConfigured(): boolean {
+  return Boolean(
+    process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
+      process.env.GOOGLE_PRIVATE_KEY &&
+      process.env.GOOGLE_SHEET_ID
+  );
 }
 
 export async function appendRow(

@@ -1,9 +1,18 @@
-import { appendRow } from "@/lib/google-sheets";
+import { appendRow, isGoogleSheetsConfigured } from "@/lib/google-sheets";
+import { BRAND_NAME } from "@/lib/leadNotification";
 
-export const BRAND_NAME = "ValuationExpertWitness";
+export { BRAND_NAME, isGoogleSheetsConfigured };
 
+/**
+ * One shared GOOGLE_SHEET_TAB_NAME. Form Type distinguishes Contact vs Instruct.
+ * Timestamp | Brand | Form Type | Full Name | Email | Phone | Organisation |
+ * Asset Types | Legal Context | Expert Discipline | Hearing / Deadline |
+ * Urgency | Description
+ */
 export const SHEET_COLUMN_HEADERS = [
   "Timestamp",
+  "Brand",
+  "Form Type",
   "Full Name",
   "Email",
   "Phone",
@@ -14,7 +23,6 @@ export const SHEET_COLUMN_HEADERS = [
   "Hearing / Deadline",
   "Urgency",
   "Description",
-  "Brand",
 ] as const;
 
 export type LeadFormPayload = {
@@ -28,25 +36,22 @@ export type LeadFormPayload = {
   deadline?: string;
   urgency?: string;
   description?: string;
+  formType?: string;
 };
 
 function sanitize(str: string): string {
   return str.replace(/<[^>]*>/g, "").trim();
 }
 
-export function isGoogleSheetsConfigured(): boolean {
-  return Boolean(
-    process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
-      process.env.GOOGLE_PRIVATE_KEY &&
-      process.env.GOOGLE_SHEET_ID
-  );
+function formTypeLabel(formType?: string): string {
+  return formType === "instruct" ? "Instruct" : "Contact";
 }
 
 export async function appendLeadToSheet(payload: LeadFormPayload): Promise<void> {
-  const timestamp = new Date().toISOString();
-
   await appendRow([
-    timestamp,
+    new Date().toISOString(),
+    BRAND_NAME,
+    formTypeLabel(payload.formType),
     sanitize(payload.fullName),
     payload.email.toLowerCase().trim(),
     payload.phone?.trim() ?? "",
@@ -57,42 +62,25 @@ export async function appendLeadToSheet(payload: LeadFormPayload): Promise<void>
     payload.deadline ?? "",
     payload.urgency ?? "",
     sanitize(payload.description ?? ""),
-    BRAND_NAME,
   ]);
 }
 
-export async function notifyLeadWebhook(
-  payload: Pick<LeadFormPayload, "fullName" | "email" | "phone">
-): Promise<void> {
-  const webhookUrl =
-    process.env.Lead_notification_url || process.env.LEAD_NOTIFICATION_URL;
-
-  if (!webhookUrl) return;
-
-  const body = {
-    "Full Name": payload.fullName.trim(),
-    Email: payload.email.trim(),
-    "Phone Number": payload.phone?.trim() ?? "",
-    "Brand name": BRAND_NAME,
-  };
-
-  const response = await fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-
-  if (!response.ok) {
-    throw new Error("Webhook request failed");
-  }
-}
-
-export async function processLeadSubmission(payload: LeadFormPayload): Promise<void> {
-  await appendLeadToSheet(payload);
+/** Soft-fail Sheets append — logs errors, never throws when webhook already succeeded. */
+export async function writeLeadToSheetSafely(
+  payload: LeadFormPayload,
+  context = "submit-lead"
+): Promise<boolean> {
+  if (!isGoogleSheetsConfigured()) return false;
 
   try {
-    await notifyLeadWebhook(payload);
+    await appendLeadToSheet(payload);
+    return true;
   } catch (error) {
-    console.error("Lead webhook failed (sheet write succeeded):", error);
+    console.error("Google Sheets write failed (soft-fail):", {
+      context,
+      error,
+      tab: process.env.GOOGLE_SHEET_TAB_NAME || "Sheet1",
+    });
+    return false;
   }
 }

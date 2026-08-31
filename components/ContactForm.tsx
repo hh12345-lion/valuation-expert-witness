@@ -40,7 +40,8 @@ export default function ContactForm() {
       email: String(data.get("email") || "").trim(),
       phone: String(data.get("phone") || "").trim(),
       organisation: String(data.get("organisation") || "").trim(),
-      description: String(data.get("description") || "").trim(),
+      formType: "contact" as const,
+      message: String(data.get("description") || "").trim(),
     };
 
     if (!leadPayload.fullName || !leadPayload.email) {

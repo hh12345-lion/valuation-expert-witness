@@ -1,14 +1,27 @@
 /**
- * Netlify function: forwards contact form leads to n8n (or any webhook).
- * Set Lead_notification_url in Netlify environment variables.
+ * Netlify Function backup: POST lead to n8n webhook (Lead_notification_setup.md).
+ * Production prefers Next.js app/api/submit-lead/route.ts (webhook + soft-fail Sheets).
+ * Env: Lead_notification_url, NEXT_PUBLIC_SITE_URL.
  */
-const BRAND_NAME = "ValuationExpertWitness";
+const BRAND_NAME = "Valuation Expert Witness";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "Content-Type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
+
+function getSiteDomain() {
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "https://www.valuationexpertwitness.co.uk";
+
+  try {
+    return new URL(raw).hostname.replace(/^www\./i, "");
+  } catch {
+    return "valuationexpertwitness.co.uk";
+  }
+}
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") {
@@ -29,7 +42,7 @@ exports.handler = async (event) => {
   if (!webhookUrl) {
     console.error("Lead_notification_url is not configured");
     return {
-      statusCode: 500,
+      statusCode: 503,
       headers: CORS_HEADERS,
       body: JSON.stringify({ error: "Lead notification URL not configured" }),
     };
@@ -46,29 +59,35 @@ exports.handler = async (event) => {
     };
   }
 
-  const { fullName, email, phone } = body;
+  const fullName =
+    typeof body.fullName === "string" ? body.fullName.trim() : "";
+  const email = typeof body.email === "string" ? body.email.trim() : "";
+  const phone = typeof body.phone === "string" ? body.phone.trim() : "";
+  const message =
+    typeof body.message === "string"
+      ? body.message.trim()
+      : typeof body.description === "string"
+        ? body.description.trim()
+        : "";
 
-  if (!fullName || typeof fullName !== "string" || !fullName.trim()) {
+  if (!fullName || !email) {
     return {
       statusCode: 400,
       headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "fullName is required" }),
+      body: JSON.stringify({ error: "fullName and email are required" }),
     };
   }
 
-  if (!email || typeof email !== "string" || !email.trim()) {
-    return {
-      statusCode: 400,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "email is required" }),
-    };
-  }
+  const fullNameOutbound = message
+    ? `${fullName} — ${message.slice(0, 500)}`
+    : fullName;
 
   const payload = {
-    "Full Name": fullName.trim(),
-    Email: email.trim(),
-    "Phone Number": typeof phone === "string" ? phone.trim() : "",
+    "Full Name": fullNameOutbound,
+    Email: email,
+    "Phone Number": phone,
     "Brand name": BRAND_NAME,
+    domain: getSiteDomain(),
   };
 
   try {
