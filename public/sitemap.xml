@@ -133,12 +133,6 @@
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://valuationexpertwitness.co.uk/cookies</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.30</priority>
-  </url>
-  <url>
     <loc>https://valuationexpertwitness.co.uk/glossary</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
@@ -193,12 +187,6 @@
     <priority>0.88</priority>
   </url>
   <url>
-    <loc>https://valuationexpertwitness.co.uk/privacy</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.30</priority>
-  </url>
-  <url>
     <loc>https://valuationexpertwitness.co.uk/qualifications</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
@@ -209,12 +197,6 @@
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.92</priority>
-  </url>
-  <url>
-    <loc>https://valuationexpertwitness.co.uk/terms</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.30</priority>
   </url>
   <url>
     <loc>https://valuationexpertwitness.co.uk/valuation-types</loc>

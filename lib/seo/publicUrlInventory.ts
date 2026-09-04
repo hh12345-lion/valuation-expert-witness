@@ -18,9 +18,6 @@ export const APP_STATIC_PATHS: string[] = [
   "/guides",
   "/glossary",
   "/contact",
-  "/privacy",
-  "/terms",
-  "/cookies",
 ];
 
 function dynamicPaths(): string[] {
