@@ -47,7 +47,7 @@ const CORS_HEADERS = {
 function getSiteDomain() {
   const raw =
     process.env.NEXT_PUBLIC_SITE_URL ||
-    "https://www.valuationexpertwitness.co.uk";
+    "https://valuationexpertwitness.co.uk";
 
   try {
     return new URL(raw).hostname.replace(/^www\./i, "");

@@ -2,7 +2,9 @@ import { assetTypes } from "@/lib/data/asset-types";
 import { caseTypes } from "@/lib/data/case-types";
 import { guides } from "@/lib/data/guides";
 
-export const CANONICAL_HOST = "https://www.valuationexpertwitness.co.uk";
+import { getPublicSiteUrl } from "@/lib/site";
+
+export const CANONICAL_HOST = getPublicSiteUrl();
 
 export const APP_STATIC_PATHS: string[] = [
   "/",
