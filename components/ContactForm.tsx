@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { SITE_EMAIL } from "@/lib/site";
+import { submitNetlifyForm } from "@/lib/submitNetlifyForm";
 
 const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
 const formspreeUrl = formspreeId ? `https://formspree.io/f/${formspreeId}` : null;
@@ -63,11 +64,33 @@ export default function ContactForm() {
       };
 
       if (res.ok && (result.ok || result.success || res.status === 200)) {
+        try {
+          await submitNetlifyForm("contact", {
+            name: leadPayload.fullName,
+            email: leadPayload.email,
+            organisation: leadPayload.organisation,
+            phone: leadPayload.phone,
+            description: leadPayload.message,
+          });
+        } catch {
+          // Sheets/webhook already stored the enquiry; don't block the visitor.
+        }
         router.push("/thank-you");
         return;
       }
 
       if (res.status === 503 && (await submitToFormspree(form))) {
+        try {
+          await submitNetlifyForm("contact", {
+            name: leadPayload.fullName,
+            email: leadPayload.email,
+            organisation: leadPayload.organisation,
+            phone: leadPayload.phone,
+            description: leadPayload.message,
+          });
+        } catch {
+          // Formspree already stored the enquiry; don't block the visitor.
+        }
         router.push("/thank-you");
         return;
       }
@@ -78,6 +101,17 @@ export default function ContactForm() {
       );
     } catch {
       if (await submitToFormspree(form)) {
+        try {
+          await submitNetlifyForm("contact", {
+            name: leadPayload.fullName,
+            email: leadPayload.email,
+            organisation: leadPayload.organisation,
+            phone: leadPayload.phone,
+            description: leadPayload.message,
+          });
+        } catch {
+          // Formspree already stored the enquiry; don't block the visitor.
+        }
         router.push("/thank-you");
         return;
       }
@@ -91,7 +125,19 @@ export default function ContactForm() {
   const labelClass = "mb-1 block text-sm font-medium text-heading";
 
   return (
-    <form onSubmit={handleSubmit} className="min-w-0 max-w-lg space-y-4">
+    <form
+      name="contact"
+      method="POST"
+      action="/__forms.html"
+      onSubmit={handleSubmit}
+      className="min-w-0 max-w-lg space-y-4"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <p className="hidden" aria-hidden="true">
+        <label>
+          Do not fill this out: <input name="bot-field" tabIndex={-1} autoComplete="off" />
+        </label>
+      </p>
       <div className="min-w-0">
         <label htmlFor="name" className={labelClass}>
           Full name <span className="text-accent">*</span>
