@@ -52,6 +52,7 @@ export function buildLeadWebhookPayload(input: LeadWebhookInput) {
     "Phone Number": sanitize(input.phone ?? ""),
     "Brand name": BRAND_NAME,
     domain: getSiteDomain(),
+    message,
   };
 }
 
