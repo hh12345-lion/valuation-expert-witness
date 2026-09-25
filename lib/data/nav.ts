@@ -31,5 +31,6 @@ export const resourcesNavLinks = [
   { label: "Qualifications", href: "/qualifications" },
   { label: "How to Instruct", href: "/how-to-instruct" },
   { label: "Guides", href: "/guides" },
+  { label: "Blog", href: "/blog" },
   { label: "Glossary", href: "/glossary" },
 ];

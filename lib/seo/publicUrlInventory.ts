@@ -1,6 +1,7 @@
 import { assetTypes } from "@/lib/data/asset-types";
 import { caseTypes } from "@/lib/data/case-types";
 import { guides } from "@/lib/data/guides";
+import { getBlogSlugs } from "@/lib/blog";
 
 import { getPublicSiteUrl } from "@/lib/site";
 
@@ -16,6 +17,7 @@ export const APP_STATIC_PATHS: string[] = [
   "/qualifications",
   "/how-to-instruct",
   "/guides",
+  "/blog",
   "/glossary",
   "/contact",
 ];
@@ -25,6 +27,7 @@ function dynamicPaths(): string[] {
     ...assetTypes.map((a) => `/asset-types/${a.slug}`),
     ...caseTypes.map((c) => `/case-types/${c.slug}`),
     ...guides.map((g) => `/guides/${g.slug}`),
+    ...getBlogSlugs().map((slug) => `/blog/${slug}`),
   ];
 }
 
@@ -45,6 +48,7 @@ export function buildPublicUrlInventory(): PublicUrlInventory {
 
 export function getChangeFreq(path: string): string {
   if (path === "/") return "weekly";
+  if (path === "/blog" || path.startsWith("/blog/")) return "weekly";
   if (path === "/privacy" || path === "/terms" || path === "/cookies") return "yearly";
   if (path.startsWith("/guides")) return "monthly";
   return "monthly";
@@ -64,6 +68,8 @@ export function getPriority(path: string): number {
   ) {
     return 0.88;
   }
+  if (path === "/blog") return 0.87;
+  if (path.startsWith("/blog/")) return 0.82;
   if (path.startsWith("/guides/")) return 0.8;
   if (path === "/glossary") return 0.75;
   if (path === "/contact") return 0.7;
