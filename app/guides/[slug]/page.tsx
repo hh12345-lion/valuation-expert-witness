@@ -3,14 +3,11 @@ import PageHero from "@/components/PageHero";
 import CTASection from "@/components/CTASection";
 import JsonLd from "@/components/JsonLd";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
-import { guides, getGuide } from "@/lib/data/guides";
+import { getGuide } from "@/lib/data/guides";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 type Props = { params: Promise<{ slug: string }> };
-
-export async function generateStaticParams() {
-  return guides.map((g) => ({ slug: g.slug }));
-}
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -45,6 +42,7 @@ export default async function GuidePage({ params }: Props) {
         ]}
       />
       <PageHero
+        photo={photoFor(`/guides/${guide.slug}`)}
         title={guide.title}
         breadcrumbs={[
           { label: "Home", href: "/" },

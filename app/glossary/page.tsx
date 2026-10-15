@@ -4,6 +4,7 @@ import JsonLd from "@/components/JsonLd";
 import { definedTermSetSchema, breadcrumbSchema } from "@/lib/schema";
 import { glossaryTerms } from "@/lib/data/glossary";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Valuation Expert Witness Glossary",
@@ -25,6 +26,7 @@ export default function GlossaryPage() {
         ]}
       />
       <PageHero
+        photo={photoFor("/glossary")}
         title="Valuation Expert Witness Glossary"
         subtitle="Definitions of key valuation concepts, legal standards, and professional qualifications used in UK litigation expert evidence."
         breadcrumbs={[

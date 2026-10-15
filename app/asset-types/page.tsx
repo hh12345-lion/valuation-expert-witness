@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { assetTypes } from "@/lib/data/asset-types";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Valuation Expert Witnesses by Asset Type | UK All Assets",
@@ -25,8 +26,9 @@ export default function AssetTypesHubPage() {
         ])}
       />
       <PageHero
+        photo={photoFor("/asset-types")}
         title="Valuation Expert Witnesses by Asset Type"
-        subtitle="Every asset type in UK litigation has its own dedicated page covering the correct expert discipline, valuation methodology, key legal contexts, and FAQs. The broadest asset type coverage of any valuation expert witness site in the UK."
+        subtitle="Every asset type in UK litigation has its own dedicated page covering the correct expert discipline, valuation methodology, key legal contexts, and FAQs."
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "Asset Types" },

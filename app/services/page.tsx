@@ -7,6 +7,7 @@ import { services } from "@/lib/data/services";
 import { getServiceFaqs } from "@/lib/data/service-faqs";
 import { siteFaqs } from "@/lib/data/faq";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Valuation Expert Witness Services UK | All Asset Types",
@@ -34,6 +35,7 @@ export default function ServicesPage() {
         ]}
       />
       <PageHero
+        photo={photoFor("/services")}
         title="Valuation Expert Witness Services UK"
         subtitle="CPR Part 35 compliant valuation expert evidence for United Kingdom litigation and arbitration. Forensic accountants, RICS chartered surveyors, and specialist valuers across England, Wales, Scotland, and Northern Ireland."
         breadcrumbs={[
@@ -93,7 +95,7 @@ export default function ServicesPage() {
                 {serviceFaqs.length > 0 && (
                   <div className="mt-10 max-w-3xl min-w-0">
                     <h3 className="text-lg sm:text-xl font-bold text-heading mb-4">
-                      {service.title} — FAQs
+                      {service.title}, FAQs
                     </h3>
                     <FAQAccordion faqs={serviceFaqs} />
                   </div>

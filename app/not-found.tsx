@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import CTASection from "@/components/CTASection";
+import { photoFor } from "@/lib/page-photos";
 
 const quickLinks = [
   {
@@ -20,7 +21,7 @@ const quickLinks = [
   },
   {
     title: "Instruct an expert",
-    description: "Send a brief enquiry. We aim to reply within one working day.",
+    description: "Send a brief enquiry about your asset type and forum.",
     href: "/contact",
   },
 ];
@@ -29,6 +30,7 @@ export default function NotFound() {
   return (
     <>
       <PageHero
+        photo={photoFor("/not-found")}
         title="Page not found"
         subtitle="That address does not exist or may have moved. Use the links below for valuation expert witness guidance."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "404" }]}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Thank You | ValuationExpertWitness.co.uk",
@@ -15,7 +16,7 @@ const nextSteps = [
     step: "01",
     title: "Review",
     description:
-      "We review your enquiry and the expert discipline required, usually within one working day.",
+      "We review your enquiry and the expert discipline required.",
   },
   {
     step: "02",
@@ -35,8 +36,9 @@ export default function ThankYouPage() {
   return (
     <>
       <PageHero
+        photo={photoFor("/thank-you")}
         title="Enquiry received"
-        subtitle="Thank you. We have received your valuation expert witness enquiry and will reply within one working day."
+        subtitle="Thank you. We have received your valuation expert witness enquiry. We will be in touch about the next steps."
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Thank you" }]}
       />
       <section className="py-14 md:py-16">

@@ -21,7 +21,7 @@ export default function HubRelatedLinks({
               href={link.href}
               className="text-accent font-semibold hover:text-primary transition-colors"
             >
-              {link.label} →
+              {link.label}
             </Link>
           </li>
         ))}

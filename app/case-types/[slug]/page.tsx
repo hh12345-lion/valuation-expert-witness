@@ -2,14 +2,11 @@ import { notFound } from "next/navigation";
 import DetailPageLayout from "@/components/DetailPageLayout";
 import JsonLd from "@/components/JsonLd";
 import { faqSchema, breadcrumbSchema } from "@/lib/schema";
-import { caseTypes, getCaseType } from "@/lib/data/case-types";
+import { getCaseType } from "@/lib/data/case-types";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 type Props = { params: Promise<{ slug: string }> };
-
-export async function generateStaticParams() {
-  return caseTypes.map((c) => ({ slug: c.slug }));
-}
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -50,6 +47,7 @@ export default async function CaseTypePage({ params }: Props) {
         ]}
       />
       <DetailPageLayout
+        photo={photoFor(`/case-types/${caseType.slug}`)}
         title={caseType.title}
         breadcrumbs={[
           { label: "Home", href: "/" },

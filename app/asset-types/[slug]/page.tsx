@@ -2,14 +2,11 @@ import { notFound } from "next/navigation";
 import DetailPageLayout from "@/components/DetailPageLayout";
 import JsonLd from "@/components/JsonLd";
 import { faqSchema, breadcrumbSchema } from "@/lib/schema";
-import { assetTypes, getAssetType } from "@/lib/data/asset-types";
+import { getAssetType } from "@/lib/data/asset-types";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 type Props = { params: Promise<{ slug: string }> };
-
-export async function generateStaticParams() {
-  return assetTypes.map((a) => ({ slug: a.slug }));
-}
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -50,6 +47,7 @@ export default async function AssetTypePage({ params }: Props) {
         ]}
       />
       <DetailPageLayout
+        photo={photoFor(`/asset-types/${asset.slug}`)}
         title={asset.title}
         breadcrumbs={[
           { label: "Home", href: "/" },

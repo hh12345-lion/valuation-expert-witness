@@ -1,7 +1,5 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useId, useRef } from "react";
+import type { ReactNode } from "react";
 import type { NavLink } from "@/lib/data/nav";
 
 type Props = {
@@ -9,54 +7,47 @@ type Props = {
   href?: string;
   links: NavLink[];
   viewAll?: NavLink;
-  onNavigate?: () => void;
   mobile?: boolean;
   align?: "left" | "right";
-  isOpen: boolean;
-  onOpen: () => void;
-  onClose: () => void;
+  active: boolean;
+  pathname: string;
+  className?: string;
+  marker?: ReactNode;
 };
 
+/** Desktop panels open on hover or focus through CSS; mobile groups fold with details. */
 export default function NavDropdown({
   label,
   href,
   links,
   viewAll,
-  onNavigate,
   mobile = false,
   align = "left",
-  isOpen,
-  onOpen,
-  onClose,
+  active,
+  pathname,
+  className = "",
+  marker,
 }: Props) {
-  const id = useId();
-  const panelId = `${id}-panel`;
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (mobile) return;
-    function handleClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        onClose();
-      }
-    }
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [mobile, isOpen, onClose]);
+  const isCurrent = (h: string) => h === pathname;
 
   if (mobile) {
     return (
-      <div>
-        <p className="font-label text-muted mb-2">{label}</p>
-        <ul className="space-y-1">
+      <details className="fold border-b border-border" open={active}>
+        <summary
+          className={`flex min-h-[52px] items-center justify-between text-lg font-bold ${active ? "text-accent" : "text-primary"}`}
+        >
+          {label}
+          <span aria-hidden="true" className="fold-sign text-xl font-normal text-accent transition-transform">
+            +
+          </span>
+        </summary>
+        <ul className="pb-3">
           {viewAll && (
             <li>
               <Link
                 href={viewAll.href}
-                className="flex min-h-[44px] items-center px-2 font-semibold text-body transition-colors hover:text-primary"
-                onClick={onNavigate}
+                aria-current={isCurrent(viewAll.href) ? "page" : undefined}
+                className={`flex min-h-[42px] items-center px-1 font-semibold ${isCurrent(viewAll.href) ? "text-accent" : "text-primary"}`}
               >
                 {viewAll.label}
               </Link>
@@ -66,99 +57,73 @@ export default function NavDropdown({
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="flex min-h-[44px] items-center px-2 text-body transition-colors hover:text-primary"
-                onClick={onNavigate}
+                aria-current={isCurrent(link.href) ? "page" : undefined}
+                className={`flex min-h-[42px] items-center gap-3 px-1 ${isCurrent(link.href) ? "font-semibold text-accent" : "text-body"}`}
               >
+                <span aria-hidden="true" className="h-1.5 w-2 shrink-0 bg-accent/60 [clip-path:polygon(0_0,100%_0,50%_100%)]" />
                 {link.label}
               </Link>
             </li>
           ))}
         </ul>
-      </div>
+      </details>
     );
   }
 
-  return (
-    <div
-      ref={ref}
-      className="relative"
-      onMouseEnter={onOpen}
-      onMouseLeave={onClose}
-    >
-      <button
-        type="button"
-        className={`inline-flex min-h-[44px] items-center gap-1 border-b-2 px-3 text-sm font-medium transition-colors whitespace-nowrap ${
-          isOpen
-            ? "border-accent text-primary"
-            : "border-transparent text-body hover:border-accent hover:text-primary"
-        }`}
-        aria-expanded={isOpen}
-        aria-haspopup="true"
-        aria-controls={panelId}
-        onClick={() => (isOpen ? onClose() : onOpen())}
-      >
-        {label}
-        <svg
-          className={`h-3.5 w-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+  const trigger = (
+    <>
+      {label}
+      <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 4 L6 8 L10 4" stroke="currentColor" strokeWidth="1.8" />
+      </svg>
+      {marker}
+    </>
+  );
 
-      {isOpen && (
-        <div
-          id={panelId}
-          role="menu"
-          className={`absolute top-full z-50 pt-0 ${
-            align === "right" ? "right-0 left-auto" : "left-0"
-          }`}
-        >
-          <div className="min-w-[13rem] max-w-[min(20rem,calc(100vw-2rem))] border border-border bg-white py-2 shadow-[var(--shadow-lift)]">
-            {viewAll && (
-              <Link
-                href={viewAll.href}
-                role="menuitem"
-                className="block px-4 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-section-alt"
-                onClick={onClose}
-              >
-                {viewAll.label}
-              </Link>
-            )}
-            {viewAll && <div className="my-1 border-t border-border" />}
-            <ul className="max-h-[70vh] overflow-y-auto">
-              {links.map((link) => (
+  return (
+    <div className="nav-item relative">
+      {href ? (
+        <Link href={href} aria-haspopup="true" aria-current={active ? "page" : undefined} className={className}>
+          {trigger}
+        </Link>
+      ) : (
+        <button type="button" aria-haspopup="true" className={className}>
+          {trigger}
+        </button>
+      )}
+      <div className={`nav-panel absolute top-full z-50 w-[min(92vw,21rem)] ${align === "right" ? "right-0" : "left-0"}`}>
+        <div className="border border-border border-t-4 border-t-primary bg-white shadow-[var(--shadow-lift)]">
+          {viewAll && (
+            <Link
+              href={viewAll.href}
+              className="flex items-center justify-between bg-lavender px-5 py-3 text-sm font-bold text-primary hover:text-accent"
+            >
+              {viewAll.label}
+              <span aria-hidden="true" className="h-2 w-3 bg-accent [clip-path:polygon(0_0,100%_0,50%_100%)] -rotate-90" />
+            </Link>
+          )}
+          <ul className="max-h-[min(62vh,26rem)] overflow-y-auto py-2">
+            {links.map((link) => {
+              const current = isCurrent(link.href);
+              return (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    role="menuitem"
-                    className="block px-4 py-2.5 text-sm text-body transition-colors hover:bg-section-alt hover:text-primary"
-                    onClick={onClose}
+                    aria-current={current ? "page" : undefined}
+                    className={`block border-l-4 px-5 py-2.5 text-[0.95rem] ${
+                      current
+                        ? "border-accent bg-surface font-semibold text-primary"
+                        : "border-transparent text-body hover:border-lavender hover:bg-surface hover:text-primary"
+                    }`}
                   >
                     {link.label}
                   </Link>
                 </li>
-              ))}
-            </ul>
-            {href && (
-              <>
-                <div className="my-1 border-t border-border" />
-                <Link
-                  href={href}
-                  role="menuitem"
-                  className="block px-4 py-2.5 text-sm font-medium text-highlight transition-colors hover:bg-section-alt"
-                  onClick={onClose}
-                >
-                  Overview →
-                </Link>
-              </>
-            )}
-          </div>
+              );
+            })}
+          </ul>
         </div>
-      )}
+      </div>
     </div>
   );
 }

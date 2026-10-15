@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { caseTypes } from "@/lib/data/case-types";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Case Types Requiring Valuation Expert Witnesses UK",
@@ -25,6 +26,7 @@ export default function CaseTypesHubPage() {
         ])}
       />
       <PageHero
+        photo={photoFor("/case-types")}
         title="Case Types Requiring Valuation Expert Witnesses UK"
         subtitle="From shareholder disputes and matrimonial financial remedy to compulsory purchase, IP infringement, and international arbitration. Each case type page explains which valuation experts are needed and the applicable legal standards."
         breadcrumbs={[

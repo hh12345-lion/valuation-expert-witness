@@ -4,11 +4,12 @@ import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { createMetadata } from "@/lib/metadata";
 import { SITE_EMAIL } from "@/lib/site";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Instruct a Valuation Expert Witness | Enquiry",
   description:
-    "Send a brief enquiry to instruct a valuation expert witness for UK litigation. All asset types. Response within one working day.",
+    "Send a brief enquiry to instruct a valuation expert witness for UK litigation. All asset types, all UK forums.",
   path: "/contact",
 });
 
@@ -22,8 +23,9 @@ export default function ContactPage() {
         ])}
       />
       <PageHero
+        photo={photoFor("/contact")}
         title="Instruct a valuation expert witness"
-        subtitle="A short enquiry is enough. Tell us the asset type, forum, and what you need — we will reply within one working day."
+        subtitle="A short enquiry is enough. Tell us the asset type, forum, and what you need."
         breadcrumbs={[
           { label: "Home", href: "/" },
           { label: "Enquiry" },
@@ -54,7 +56,7 @@ export default function ContactPage() {
                 <li>A short note on the asset and forum</li>
               </ul>
               <p className="mt-6 border-t border-border pt-4 text-xs leading-relaxed text-muted">
-                We aim to respond within one working day. Urgent hearing dates should be mentioned in
+                Urgent hearing dates should be mentioned in
                 the enquiry.
               </p>
             </aside>

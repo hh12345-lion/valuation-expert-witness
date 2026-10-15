@@ -1,6 +1,6 @@
 ---
 title: "Valuing Loss-Making or Early-Stage Businesses in Litigation"
-description: "How valuation experts approach loss-making and early-stage businesses in litigation — forecasts, negative earnings, market evidence, and material assumptions."
+description: "How valuation experts approach loss-making and early-stage businesses in litigation, forecasts, negative earnings, market evidence, and material assumptions."
 date: "2026-09-25"
 updated: "2026-09-25"
 image: "/images/blog/valuing-loss-making-early-stage-businesses-in-litigation.webp"

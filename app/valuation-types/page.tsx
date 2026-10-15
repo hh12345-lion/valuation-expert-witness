@@ -8,6 +8,7 @@ import { valuationTypesFaqs } from "@/lib/data/valuation-types-faqs";
 import { getValuationTypesRelatedLinks } from "@/lib/seo/internalLinks";
 import { articleSchema, breadcrumbSchema, faqSchema } from "@/lib/schema";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Types of Valuation in UK Litigation | Business, Property, IP & Specialist Assets",
@@ -35,6 +36,7 @@ export default function ValuationTypesPage() {
         ]}
       />
       <PageHero
+        photo={photoFor("/valuation-types")}
         title="Types of Valuation in UK Litigation: The Complete Guide"
         subtitle="The definitive reference for UK solicitors on valuation expert evidence across all asset types, expert disciplines, valuation standards, and legal contexts."
         breadcrumbs={[

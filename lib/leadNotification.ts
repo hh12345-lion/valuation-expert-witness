@@ -19,7 +19,7 @@ export function getLeadWebhookUrl(): string | undefined {
   );
 }
 
-/** Hostname from NEXT_PUBLIC_SITE_URL — no protocol, no www. */
+/** Hostname from NEXT_PUBLIC_SITE_URL: no protocol, no www. */
 export function getSiteDomain(): string {
   const raw = process.env.NEXT_PUBLIC_SITE_URL || SITE_URL;
 
@@ -38,12 +38,12 @@ function sanitize(value: string): string {
   return value.replace(/<[^>]*>/g, "").trim();
 }
 
-/** Outbound JSON shape — identical across all brand sites (see Lead_notification_setup.md). */
+/** Outbound JSON shape: identical across all brand sites (see Lead_notification_setup.md). */
 export function buildLeadWebhookPayload(input: LeadWebhookInput) {
   const name = sanitize(input.fullName);
   const message = input.message ? sanitize(input.message) : "";
   const fullNameOutbound = message
-    ? `${name} — ${message.slice(0, 500)}`
+    ? `${name}, ${message.slice(0, 500)}`
     : name;
 
   return {

@@ -1,38 +1,26 @@
-"use client";
-
-import { useState } from "react";
 import type { FAQ } from "@/lib/schema";
 
 export default function FAQAccordion({ faqs }: { faqs: FAQ[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
   return (
-    <div className="divide-y divide-border border-y border-border">
-      {faqs.map((faq, index) => {
-        const isOpen = openIndex === index;
-        return (
-          <div key={index}>
-            <button
-              type="button"
-              className="flex w-full min-h-[44px] items-center justify-between gap-4 py-4 text-left"
-              onClick={() => setOpenIndex(isOpen ? null : index)}
-              aria-expanded={isOpen}
+    <div className="border-t border-border">
+      {faqs.map((faq, index) => (
+        <details key={index} className="faq group border-b border-border" open={index === 0}>
+          <summary className="flex min-h-[44px] items-start justify-between gap-4 py-5">
+            <span className="font-heading text-left text-base font-bold text-heading break-words sm:text-lg">
+              {faq.question}
+            </span>
+            <span
+              aria-hidden="true"
+              className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center bg-lavender text-lg leading-none text-accent"
             >
-              <span className="font-heading text-left text-sm font-semibold text-heading break-words sm:text-base">
-                {faq.question}
-              </span>
-              <span className="shrink-0 text-lg font-light text-accent" aria-hidden="true">
-                {isOpen ? "−" : "+"}
-              </span>
-            </button>
-            {isOpen && (
-              <div className="pb-4 text-body leading-relaxed break-words [overflow-wrap:anywhere]">
-                {faq.answer}
-              </div>
-            )}
+              <span className="faq-sign inline-block transition-transform">+</span>
+            </span>
+          </summary>
+          <div className="max-w-prose pb-6 leading-relaxed text-body break-words [overflow-wrap:anywhere]">
+            {faq.answer}
           </div>
-        );
-      })}
+        </details>
+      ))}
     </div>
   );
 }

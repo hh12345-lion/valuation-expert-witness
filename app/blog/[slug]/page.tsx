@@ -5,16 +5,12 @@ import { notFound } from "next/navigation";
 import CTASection from "@/components/CTASection";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
-import { getBlogBySlug, getBlogSlugs } from "@/lib/blog";
+import { getBlogBySlug } from "@/lib/blog";
 import { markdownToHtml } from "@/lib/markdown";
 import { createMetadata } from "@/lib/metadata";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
-
-export async function generateStaticParams() {
-  return getBlogSlugs().map((slug) => ({ slug }));
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -86,53 +82,71 @@ export default async function BlogPostPage({ params }: Props) {
           },
         ]}
       />
-      {post.image ? (
-        <div className="relative mx-auto h-[min(28rem,55vw)] w-full max-w-6xl border-b border-border">
-          <Image
-            src={post.image}
-            alt={post.imageAlt || post.title}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
+      <header className="relative overflow-hidden border-b border-border bg-surface">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-24 top-0 hidden h-full w-72 bg-lavender [clip-path:polygon(0_0,100%_0,50%_100%)] lg:block"
+        />
+        <div className="page-container relative py-12 md:py-16">
+          <div className="max-w-4xl">
+          <h1 className="font-heading text-3xl font-extrabold leading-[1.1] text-heading sm:text-4xl md:text-5xl">
+            {post.title}
+          </h1>
+          <p className="mt-5 text-lg leading-relaxed text-body">{post.description}</p>
+          <p className="font-label mt-6 text-muted">
+            <time dateTime={post.updated || post.date}>
+              {new Date(post.updated || post.date).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </time>
+            <span className="mx-2">·</span>
+            <span className="normal-case tracking-normal">{post.readingTime}</span>
+          </p>
+          <nav aria-label="Breadcrumb" className="mt-6 border-t border-border pt-4">
+            <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-muted">
+              <li>
+                <Link href="/" className="hover:text-accent">
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" className="h-2 w-2 bg-accent [clip-path:polygon(0_0,100%_0,50%_100%)]" />
+              <li>
+                <Link href="/blog" className="hover:text-accent">
+                  Blog
+                </Link>
+              </li>
+              <li aria-hidden="true" className="h-2 w-2 bg-accent [clip-path:polygon(0_0,100%_0,50%_100%)]" />
+              <li className="text-heading" aria-current="page">
+                {post.title}
+              </li>
+            </ol>
+          </nav>
+          </div>
         </div>
-      ) : null}
+      </header>
 
-      <article className="prose-content page-container mx-auto max-w-3xl py-12 md:py-16">
-        <nav aria-label="Breadcrumb" className="mb-6 not-prose text-sm text-muted">
-          <Link href="/" className="hover:text-accent">
-            Home
-          </Link>
-          {" / "}
-          <Link href="/blog" className="hover:text-accent">
-            Blog
-          </Link>
-          {" / "}
-          <span className="text-heading">{post.title}</span>
-        </nav>
+      <div className="page-container py-12 md:py-16">
+      <article className="prose-content mx-auto max-w-3xl">
+        {post.image ? (
+          <div className="not-prose v-notch relative mb-10 aspect-[16/9] w-full overflow-hidden bg-lavender">
+            <Image
+              src={post.image}
+              alt={post.imageAlt || post.title}
+              fill
+              priority
+              sizes="(min-width: 768px) 48rem, 100vw"
+              className="object-cover"
+            />
+          </div>
+        ) : null}
 
-        <p className="not-prose font-label text-[11px] font-semibold uppercase tracking-widest text-muted">
-          <time dateTime={post.updated || post.date}>
-            {new Date(post.updated || post.date).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </time>
-          <span className="mx-2">·</span>
-          <span className="normal-case tracking-normal">{post.readingTime}</span>
-        </p>
-        <h1 className="mt-3 font-heading text-3xl font-bold leading-tight text-heading sm:text-4xl">
-          {post.title}
-        </h1>
-        <p className="mt-4 text-lg text-muted">{post.description}</p>
-
-        <div className="mt-10" dangerouslySetInnerHTML={{ __html: html }} />
+        <div dangerouslySetInnerHTML={{ __html: html }} />
 
         <p className="not-prose mt-12 border-t border-border pt-8 text-sm">
           <Link href="/blog" className="font-semibold text-accent hover:text-highlight">
-            ← Back to the blog
+            Back to the blog
           </Link>
           <span className="mx-3 text-muted/50">·</span>
           <Link href="/contact" className="font-semibold text-accent hover:text-highlight">
@@ -140,6 +154,7 @@ export default async function BlogPostPage({ params }: Props) {
           </Link>
         </p>
       </article>
+      </div>
       <CTASection />
     </>
   );

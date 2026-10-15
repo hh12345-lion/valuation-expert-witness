@@ -3,6 +3,7 @@ import CTASection from "@/components/CTASection";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "How to Instruct a Valuation Expert Witness",
@@ -21,6 +22,7 @@ export default function HowToInstructPage() {
         ])}
       />
       <PageHero
+        photo={photoFor("/how-to-instruct")}
         title="How to Instruct a Valuation Expert Witness"
         subtitle="A practical seven-step guide for UK solicitors and barristers on instructing valuation expert witnesses across all asset types."
         breadcrumbs={[

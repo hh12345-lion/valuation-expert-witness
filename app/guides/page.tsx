@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { guides } from "@/lib/data/guides";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Valuation Expert Witness Guides for Solicitors",
@@ -25,6 +26,7 @@ export default function GuidesHubPage() {
         ])}
       />
       <PageHero
+        photo={photoFor("/guides")}
         title="Valuation Expert Witness Guides"
         subtitle="Practical guides for UK solicitors and barristers on instructing valuation expert witnesses across all asset types and litigation contexts."
         breadcrumbs={[

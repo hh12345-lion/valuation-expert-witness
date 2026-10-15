@@ -4,6 +4,7 @@ import CTASection from "@/components/CTASection";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "What Is a Valuation Expert Witness? | UK Role & All Asset Types",
@@ -22,6 +23,7 @@ export default function WhatIsPage() {
         ])}
       />
       <PageHero
+        photo={photoFor("/what-is-a-valuation-expert-witness")}
         title="What Is a Valuation Expert Witness?"
         subtitle="An independent professional who provides expert opinion evidence on the value of assets for UK courts, tribunals, and arbitration proceedings."
         breadcrumbs={[

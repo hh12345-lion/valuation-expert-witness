@@ -1,23 +1,26 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary: #1c1917;
-  --color-primary-soft: #292524;
-  --color-accent: #0e7490;
-  --color-accent-hover: #155e75;
-  --color-highlight: #b45309;
-  --color-section-alt: #f1f5f9;
-  --color-surface: #f8fafc;
-  --color-border: #cbd5e1;
-  --color-heading: #1c1917;
-  --color-body: #44403c;
-  --color-muted: #78716c;
-  --font-heading: var(--font-literata), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-outfit), system-ui, sans-serif;
-  --radius-card: 2px;
-  --radius-sm: 2px;
-  --shadow-card: 0 1px 0 rgba(28, 25, 23, 0.06);
-  --shadow-lift: 0 12px 40px rgba(28, 25, 23, 0.08);
+  --color-primary: #2c2334;
+  --color-primary-soft: #3a2f45;
+  --color-accent: #665172;
+  --color-accent-hover: #2c2334;
+  --color-highlight: #4d3d58;
+  --color-lavender: #e7e2ef;
+  --color-mist: #cfcfd4;
+  --color-section-alt: #e7e2ef;
+  --color-surface: #f3f3f3;
+  --color-border: #cfcfd4;
+  --color-heading: #2c2334;
+  --color-body: #3b3343;
+  --color-muted: #6c6474;
+  --font-heading: var(--font-schibsted), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-prociono), Georgia, "Times New Roman", serif;
+  --font-ui: var(--font-schibsted), "Helvetica Neue", Arial, sans-serif;
+  --radius-card: 0px;
+  --radius-sm: 0px;
+  --shadow-card: 0 1px 0 rgba(44, 35, 52, 0.08);
+  --shadow-lift: 0 18px 44px rgba(44, 35, 52, 0.14);
 }
 
 *,
@@ -33,7 +36,7 @@ html {
 }
 
 body {
-  background: var(--color-surface);
+  background: #fff;
   color: var(--color-body);
   font-family: var(--font-sans);
   overflow-x: hidden;
@@ -63,56 +66,91 @@ label {
   touch-action: manipulation;
 }
 
-img,
-video,
-svg {
-  max-width: 100%;
-  height: auto;
+@layer base {
+  img,
+  video,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 .font-heading {
   font-family: var(--font-heading);
+  letter-spacing: -0.01em;
+}
+
+/* Interface text (navigation, buttons, labels, forms) uses the heading face; running text stays in Prociono. */
+nav,
+button,
+input,
+select,
+textarea,
+label,
+.font-ui {
+  font-family: var(--font-ui);
+}
+
+/* Photo frame cut from the monogram: a V notch bitten out of the top edge. */
+.v-notch {
+  clip-path: polygon(0 0, 22% 0, 34% 16%, 46% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Smaller variant for cards: the notch sits in the top right corner. */
+.v-notch-sm {
+  clip-path: polygon(0 0, 66% 0, 76% 14%, 86% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* The E bars of the monogram, used as a stepped edge on dark panels. */
+.e-bars {
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  clip-path: polygon(0 0, 100% 0, 100% 24%, 40% 24%, 40% 38%, 100% 38%, 100% 62%, 40% 62%, 40% 76%, 100% 76%, 100% 100%, 0 100%);
 }
 
 .font-label {
-  font-family: var(--font-sans);
+  font-family: var(--font-ui);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.page-container {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 74rem;
-  padding-left: max(1rem, env(safe-area-inset-left));
-  padding-right: max(1rem, env(safe-area-inset-right));
-  min-width: 0;
-  width: 100%;
-}
-
-@media (min-width: 640px) {
+@layer components {
   .page-container {
-    padding-left: max(1.5rem, env(safe-area-inset-left));
-    padding-right: max(1.5rem, env(safe-area-inset-right));
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 74rem;
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    min-width: 0;
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .page-container {
+      padding-left: max(1.5rem, env(safe-area-inset-left));
+      padding-right: max(1.5rem, env(safe-area-inset-right));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page-container {
+      padding-left: max(2rem, env(safe-area-inset-left));
+      padding-right: max(2rem, env(safe-area-inset-right));
+    }
   }
 }
 
-@media (min-width: 1024px) {
-  .page-container {
-    padding-left: max(2rem, env(safe-area-inset-left));
-    padding-right: max(2rem, env(safe-area-inset-right));
-  }
-}
-
-/* Cool slate field with subtle grid — distinct from cream / flat white sites */
+/* Lavender field with a faint diagonal hatch taken from the V of the monogram. */
 .surface-grid {
   background-color: var(--color-section-alt);
-  background-image:
-    linear-gradient(rgba(14, 116, 144, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(14, 116, 144, 0.04) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(102, 81, 114, 0.06) 0 1px,
+    transparent 1px 22px
+  );
 }
 
 .rule-accent {
@@ -120,6 +158,7 @@ svg {
 }
 
 .btn-primary {
+  font-family: var(--font-ui);
   display: inline-flex;
   min-height: 44px;
   align-items: center;
@@ -137,7 +176,52 @@ svg {
   background: var(--color-accent-hover);
 }
 
+.btn-light {
+  font-family: var(--font-ui);
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-lavender);
+  color: var(--color-primary);
+  padding: 0.65rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition: background-color 0.15s ease;
+}
+
+.btn-light:hover {
+  background: #fff;
+}
+
+/* Desktop dropdowns open on hover or keyboard focus without client script. */
+.nav-item .nav-panel {
+  display: none;
+}
+
+.nav-item:hover .nav-panel,
+.nav-item:focus-within .nav-panel {
+  display: block;
+}
+
+details.fold > summary,
+details.faq > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details.fold > summary::-webkit-details-marker,
+details.faq > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.fold[open] .fold-sign,
+details.faq[open] .faq-sign {
+  transform: rotate(45deg);
+}
+
 .btn-ghost {
+  font-family: var(--font-ui);
   display: inline-flex;
   min-height: 44px;
   align-items: center;
@@ -159,7 +243,6 @@ svg {
   overflow-wrap: break-word;
   word-wrap: break-word;
   min-width: 0;
-  max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -280,7 +363,7 @@ svg {
 
 .prose-content tr:nth-child(even) td,
 .prose-table-scroll tr:nth-child(even) td {
-  background: #fafafa;
+  background: #f7f5fa;
 }
 
 .table-scroll {
@@ -330,4 +413,12 @@ svg {
 
 .animate-fade-rise {
   animation: fade-rise 0.45s ease-out both;
+}
+
+#mobile-nav-toggle:checked ~ .header-bar .icon-open {
+  display: none;
+}
+
+#mobile-nav-toggle:checked ~ .header-bar .icon-close {
+  display: block;
 }

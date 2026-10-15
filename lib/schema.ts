@@ -84,6 +84,7 @@ export function articleSchema({
       "@type": "Organization",
       name: "ValuationExpertWitness",
       url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/brand/icon-512.png` },
     },
   };
 }
@@ -139,6 +140,8 @@ export const homepageSchema = {
       "@id": `${SITE_URL}/#organization`,
       name: "ValuationExpertWitness",
       url: SITE_URL,
+      logo: `${SITE_URL}/brand/icon-512.png`,
+      image: `${SITE_URL}/brand/og.png`,
       email: SITE_EMAIL,
       address: {
         "@type": "PostalAddress",

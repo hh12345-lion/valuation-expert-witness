@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" fill="#1C1917"/>
-  <rect x="0" y="0" width="4" height="32" fill="#A8A29E"/>
-  <text x="9" y="22" fill="#FAF7F2" font-family="Georgia, serif" font-size="12" font-weight="700">VE</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" role="img" aria-label="Valuation Expert Witness">
+<rect width="720" height="720" rx="150" fill="#FFFFFF"/>
+<g transform="translate(120 144.67) scale(1.4953)">
+<path d="M46.8623 0H187.149L117.006 164.426L46.8623 0Z" fill="#2C2334"/>
+<path d="M231.086 0L204.7 70.1434H320.37V0H231.086Z" fill="#665172"/>
+<path d="M187.157 109.277H319.669V179.265H187.157V216.294H319.669V287.845H0V0L117.013 216.203L187.157 109.277Z" fill="#665172"/>
+</g>
 </svg>

@@ -7,6 +7,7 @@ import { breadcrumbSchema } from "@/lib/schema";
 import { getAllBlogPosts } from "@/lib/blog";
 import { createMetadata } from "@/lib/metadata";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Blog | Valuation Expert Witness",
@@ -45,6 +46,7 @@ export default function BlogIndexPage() {
         ]}
       />
       <PageHero
+        photo={photoFor("/blog")}
         title="Valuation Expert Witness Blog"
         subtitle="Practitioner-facing articles on valuation evidence, loss-making and early-stage businesses, and instructing valuation experts."
         breadcrumbs={[
@@ -103,7 +105,7 @@ export default function BlogIndexPage() {
                         href={`/blog/${post.slug}`}
                         className="text-sm font-semibold text-accent hover:text-highlight"
                       >
-                        Read article →
+                        Read article
                       </Link>
                     </p>
                   </div>

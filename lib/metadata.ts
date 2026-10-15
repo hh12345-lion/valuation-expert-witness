@@ -33,11 +33,13 @@ export function createMetadata({
       siteName: "ValuationExpertWitness.co.uk",
       locale: "en_GB",
       type: "website",
+      images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: "Valuation Expert Witness" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: ["/brand/og.png"],
     },
     robots: {
       index: !noindex,

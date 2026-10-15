@@ -3,6 +3,7 @@ import CTASection from "@/components/CTASection";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
 import { createMetadata } from "@/lib/metadata";
+import { photoFor } from "@/lib/page-photos";
 
 export const metadata = createMetadata({
   title: "Valuation Expert Witness Qualifications by Discipline",
@@ -21,6 +22,7 @@ export default function QualificationsPage() {
         ])}
       />
       <PageHero
+        photo={photoFor("/qualifications")}
         title="Valuation Expert Witness Qualifications by Discipline"
         subtitle="The UK professional credentials, body memberships, and court experience required for valuation expert witnesses across all three disciplines."
         breadcrumbs={[
