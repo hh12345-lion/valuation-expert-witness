@@ -18,7 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {};
 
   const base = createMetadata({
-    title: `${post.title} | ${SITE_NAME}`,
+    // createMetadata adds "| ValuationExpertWitness.co.uk" when it fits; adding SITE_NAME here as well
+    // gave titles ending "| ValuationExpertWitness | ValuationExpertWitness.co.uk".
+    title: post.seoTitle ?? post.title,
     description: post.description,
     path: `/blog/${post.slug}`,
   });

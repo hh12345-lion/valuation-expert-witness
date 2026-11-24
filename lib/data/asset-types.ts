@@ -174,7 +174,8 @@ export const assetTypes: DetailPageItem[] = [
     slug: "financial-instruments-securities",
     title: "Financial Instruments & Securities Valuation Expert Witness UK",
     shortTitle: "Financial Instruments",
-    metaTitle: "Financial Instruments & Securities Valuation Expert Witness UK",
+    // Previously "Financial Instruments & Securities Valuation Expert Witness UK" (too long; it was cut mid-phrase in results).
+    metaTitle: "Financial Instruments & Securities Valuation Expert",
     metaDescription:
       "Financial instruments and securities valuation expert witnesses for UK litigation. Derivatives, bonds, ISDA close-out, and fair value disputes.",
     paragraphs: [

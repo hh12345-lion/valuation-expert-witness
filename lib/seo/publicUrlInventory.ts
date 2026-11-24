@@ -18,6 +18,8 @@ export const APP_STATIC_PATHS: string[] = [
   "/how-to-instruct",
   "/guides",
   "/blog",
+  // Indexable but previously missing from the sitemap.
+  "/image-credits",
   "/glossary",
   "/contact",
 ];

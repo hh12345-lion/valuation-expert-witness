@@ -7,6 +7,8 @@ const blogDirectory = path.join(process.cwd(), "content/blog");
 export type BlogPost = {
   slug: string;
   title: string;
+  /** Optional shorter title for search results when `title` is too long to fit. */
+  seoTitle?: string;
   description: string;
   date: string;
   updated?: string;
@@ -39,6 +41,7 @@ export function getBlogBySlug(slug: string): BlogPost | null {
   return {
     slug,
     title: (data.title as string) ?? slug,
+    seoTitle: data.seoTitle as string | undefined,
     description: (data.description as string) ?? "",
     date: (data.date as string) ?? "",
     updated: (data.updated as string | undefined) || undefined,
